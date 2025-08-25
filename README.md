@@ -39,6 +39,12 @@ Tailwind CSS + shadcn components for consistent styling
 ```bash
 
 git clone https://github.com/nafis200/Chat-app-task
+
+
+```
+
+```bash
+
 cd Chat-app-task
 
 ```
