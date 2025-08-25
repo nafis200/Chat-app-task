@@ -12,7 +12,7 @@ const Chat_Application = () => {
 
   return (
     <div className="p-4 space-y-4">
-      {messages.map((msg) => {
+      {messages.map((msg, idx) => {
         const isUser = msg.role === "user";
         return (
           <div
@@ -31,18 +31,25 @@ const Chat_Application = () => {
             )}
 
             {/* Message Box */}
-            <div
-              className={`max-w-[70%] p-4 rounded-lg ${
-                isUser ? "bg-gray-200 text-black" : "bg-gray-900 text-white"
-              }`}
-            >
-              <p>{msg.content}</p>
-
-              {/* Emotions Progress - Single line */}
-              <div className="mt-2 flex gap-2 items-center">
+            <div>
+              <div
+                className={`w-full p-4 rounded-lg ${
+                  isUser ? "bg-gray-200 text-black" : "bg-gray-900 text-white"
+                }`}
+              >
+                <p>{msg.content}</p>
+              </div>
+              {/* Emotions Progress */}
+              <div
+                className={`flex ${
+                  isUser ? "justify-end" : "justify-start"
+                } space-x-5 mt-3`}
+              >
                 {msg.emotions.map((e: any, i: number) => (
-                  <div key={i} className="flex-1">
-                    <div className="flex items-center justify-between text-xs mb-1 text-gray-300">
+                  <div key={i} className="">
+                    {" "}
+                    {/* Fixed width instead of flex-1 */}
+                    <div className={`w-full text-xs mb-1 text-black dark:text-white`}>
                       <span>{e.label}</span>
                       <span>{e.confidence}%</span>
                     </div>
