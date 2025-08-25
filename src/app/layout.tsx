@@ -19,9 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Chat_Application",
   description: "Chat Application Apps",
-  //  icons: {
-  //   icon: "/faviconz.ico", 
-  // },
+   icons: {
+    icon: "/whatsapp.ico", 
+  },
 };
 
 

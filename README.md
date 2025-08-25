@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💬 ChatApplication – Simple Nightlight Dashboard & Real-Time Chat
+✨ Project Overview
 
-## Getting Started
+## ✨ Project Overview
 
-First, run the development server:
+ChatApplication is a simple, single-page web application designed for real-time messaging. It features a clean night-mode dashboard with a chat interface where users can exchange messages seamlessly. Each chat message shows a small progress indicator for delivery status, giving a subtle visual cue for message flow. The UI is minimalist, responsive, and optimized for readability in low-light environments.
+
+## 🧪 Tech Stack Used
+
+# Frontend
+
+Framework: **Next.js** (with App Router)
+
+Language: **TypeScript**
+
+UI: **React.js**, **Tailwind CSS**, **Shadcn/ui**
+
+## 🔍 Features
+1. 🌙 Nightlight Dashboard
+
+Single-page layout with dark theme for eye comfort
+
+Responsive design for mobile and desktop
+
+2. 💬 Real-Time Chat
+
+Users can send and receive messages instantly
+
+Each message includes a circular avatar and a colored progress bar to indicate status
+
+3. 🎨 Minimal & Clean UI
+
+Focus on readability and simplicity
+
+Tailwind CSS + shadcn components for consistent styling
+
+## install process
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+git clone https://github.com/nafis200/Chat-app-task
+cd Chat-app-task
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install Dependencies
+``` bash
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Run the Development Page
 
-## Learn More
+```
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## folder sturcture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+ChatApplication/
+├── .env.local               # Environment variables (NEXT_PUBLIC_API, etc.)
+├── next.config.js           # Next.js configuration
+├── tsconfig.json            # TypeScript configuration
+├── next-env.d.ts            # Auto-generated for TS support
+├── public/                  # Static assets (images, icons, etc.)
+├── node_modules/            # Installed dependencies
+├── package.json             # Project metadata and scripts
+├── README.md                # Project documentation
+└── src/
+    ├── app/                 # Next.js pages & layout
+    │   ├── layout.tsx
+    │   └── page.tsx
+    ├── components/          # All reusable UI components
+    │   ├── module/
+    │   │   └── Chat.Application.tsx
+    │   ├── shared/
+    │   │   └── Navbar.tsx
+    │   └── sidebar/
+    │       ├── app-sidebar.tsx
+    │       ├── mode-toggle.tsx
+    │       ├── nav-main.tsx
+    │       ├── nav-projects.tsx
+    │       ├── nav-user.tsx
+    │       ├── team-switcher.tsx
+    │       └── theme-provider.tsx
+    ├── constants/           # Static constants 
+     types
+        ├── data.ts
+        └── index.ts
 
-## Deploy on Vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 👨‍💼 Author
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Nafis Ahamed📧 
+
+Email: nafisahamed14@gmail.com🌐 Portfolio: https://portfoliouser.vercel.app/
+
+Contact_No : ++880 1922208141(phone,whatsapp,telegram)
