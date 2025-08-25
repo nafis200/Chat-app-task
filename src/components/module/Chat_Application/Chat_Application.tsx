@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import Image from "next/image";
+import type { IMessage } from "@/types";
+
 const Chat_Application = () => {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   useEffect(() => {
     fetch("/message.json")
@@ -21,12 +24,14 @@ const Chat_Application = () => {
               isUser ? "justify-end" : "justify-start"
             } items-start gap-2`}
           >
-            {/* Avatar */}
+            {/* Picture */}
             {!isUser && (
-              <img
-                src={msg.avatar || "/bot-avatar.png"}
+              <Image
+                src={"/nafis.jpg"}
                 alt={msg.role}
-                className="w-10 h-10 rounded-full object-cover"
+                width={40}
+                height={40}
+                className="rounded-full object-cover"
               />
             )}
 
@@ -39,7 +44,7 @@ const Chat_Application = () => {
               >
                 <p>{msg.content}</p>
               </div>
-              {/* Emotions Progress */}
+              {/* Progress  Bar shadcn*/}
               <div
                 className={`flex ${
                   isUser ? "justify-end" : "justify-start"
@@ -47,9 +52,9 @@ const Chat_Application = () => {
               >
                 {msg.emotions.map((e: any, i: number) => (
                   <div key={i} className="">
-                    {" "}
-                    {/* Fixed width instead of flex-1 */}
-                    <div className={`w-full text-xs mb-1 text-black dark:text-white`}>
+                    <div
+                      className={`w-full text-xs mb-1 text-black dark:text-white`}
+                    >
                       <span>{e.label}</span>
                       <span>{e.confidence}%</span>
                     </div>
@@ -67,12 +72,14 @@ const Chat_Application = () => {
                 ))}
               </div>
             </div>
-
+          {/* Pictures */}
             {isUser && (
-              <img
-                src={msg.avatar || "/user-avatar.png"}
+              <Image
+                src={"/file.svg"}
                 alt={msg.role}
-                className="w-10 h-10 rounded-full object-cover"
+                width={40} 
+                height={40} 
+                className="rounded-full object-cover"
               />
             )}
           </div>
