@@ -43,6 +43,8 @@ git clone https://github.com/nafis200/Chat-app-task
 
 ```
 
+# node version must be need above 20.22.0
+
 ```bash
 
 cd Chat-app-task
