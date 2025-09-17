@@ -15,7 +15,9 @@ export function AudioMic() {
   useEffect(() => {
     (async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaStreamSource(stream);
         const analyser = audioCtx.createAnalyser();
@@ -38,11 +40,12 @@ export function AudioMic() {
 
     if (analyser && dataArray) {
       analyser.getByteFrequencyData(dataArray);
-      const avg = dataArray.reduce((a: any, b: any) => a + b, 0) / dataArray.length;
+      const avg =
+        dataArray.reduce((a: any, b: any) => a + b, 0) / dataArray.length;
 
       // Vibrate / Scale
       const targetScale = 1 + avg / 30;
-      setScale(prev => prev + (targetScale - prev) * 0.15);
+      setScale((prev) => prev + (targetScale - prev) * 0.15);
 
       // Rainbow neon glow for both dark & light mode
       const hue = (avg * 2) % 360;
@@ -58,25 +61,19 @@ export function AudioMic() {
 
   return (
     <Html center>
-      <div
-         className="w-full h-full flex justify-center items-center relative"
-        style={{
-          position: "relative",
-          width: "fit-content",
-          transform: `scale(${scale})`,
-          transition: "transform 0.05s linear, color 0.1s linear",
-        }}
-      >
+      <div className="w-full h-full flex justify-center items-center relative overflow-hidden">
         {/* Static gray shadow */}
         <div
           style={{
             position: "absolute",
-            width: "100%",
-            height: "100%",
+            width: "60%",
+            height: "60%",
+            maxWidth: "150px",
+            maxHeight: "150px",
             borderRadius: "50%",
-            background: "rgba(128,128,128,0.3)", // gray color
+            background: "rgba(128,128,128,0.3)",
             filter: "blur(15px)",
-            zIndex: -2, // behind dynamic glow
+            zIndex: -2,
           }}
         ></div>
 
@@ -84,9 +81,9 @@ export function AudioMic() {
         <div
           style={{
             position: "absolute",
-            width: `${glowSize * 4}px`,
-            height: `${glowSize * 4}px`,
-            borderRadius: "100%",
+            width: `${Math.min(glowSize * 4, 150)}px`,
+            height: `${Math.min(glowSize * 4, 150)}px`,
+            borderRadius: "50%",
             background: color,
             filter: `blur(${glowSize}px)`,
             opacity: 0.6,
@@ -97,9 +94,13 @@ export function AudioMic() {
         {/* Microphone Icon */}
         <FaMicrophone
           style={{
-            fontSize: "clamp(2rem, 6vw, 4rem)",
+            fontSize: "clamp(2rem, 10vw, 4rem)",
             color: color,
-            textShadow: `0 0 ${glowSize}px ${color}, 0 0 ${glowSize * 2}px ${color}, 0 0 ${glowSize * 3}px ${color}`,
+            transform: `scale(${scale})`,
+            transition: "transform 0.05s linear, color 0.1s linear",
+            textShadow: `0 0 ${glowSize}px ${color}, 0 0 ${
+              glowSize * 2
+            }px ${color}, 0 0 ${glowSize * 3}px ${color}`,
           }}
         />
       </div>
