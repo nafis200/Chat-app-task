@@ -8,18 +8,26 @@ import { FaMicrophone } from "react-icons/fa";
 export function AudioMic() {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const dataArrayRef = useRef<Uint8Array | null>(null);
+
   const [scale, setScale] = useState(1);
   const [color, setColor] = useState("red");
   const [glowSize, setGlowSize] = useState(10);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  // Detect small screen
+  // Screen detect
   useEffect(() => {
     const updateScreen = () => setIsSmallScreen(window.innerWidth < 640);
-    updateScreen();
+    updateScreen(); // initial check
     window.addEventListener("resize", updateScreen);
     return () => window.removeEventListener("resize", updateScreen);
   }, []);
+
+  // Reset states on screen change
+  useEffect(() => {
+    setScale(1);
+    setGlowSize(isSmallScreen ? 0 : 10);
+    setColor("red");
+  }, [isSmallScreen]);
 
   // Setup microphone
   useEffect(() => {
@@ -32,7 +40,6 @@ export function AudioMic() {
         analyser.fftSize = 256;
 
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
         source.connect(analyser);
         analyserRef.current = analyser;
         dataArrayRef.current = dataArray;
@@ -42,128 +49,84 @@ export function AudioMic() {
     })();
   }, []);
 
-  // Animation / Glow
+  // Animation for large screens
   useFrame(() => {
+    if (isSmallScreen) return;
+
     const analyser = analyserRef.current;
     const dataArray = dataArrayRef.current;
+    if (!analyser || !dataArray) return;
 
-    if (analyser && dataArray) {
-      analyser.getByteFrequencyData(dataArray);
-      const avg = dataArray.reduce((a: any, b: any) => a + b, 0) / dataArray.length;
+    analyser.getByteFrequencyData(dataArray);
+    const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
 
-      // Scale vibration (small devices less intense)
-      const targetScale = 1 + (isSmallScreen ? avg / 60 : avg / 30);
-      setScale(prev => prev + (targetScale - prev) * 0.15);
+    setScale(prev => prev + ((1 + avg / 30) - prev) * 0.15);
 
-      // Rainbow neon glow
-      const hue = (avg * 2) % 360;
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const lightness = isDark ? 60 : 55;
-      const saturation = isDark ? 100 : 90;
-      setColor(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+    const hue = (avg * 2) % 360;
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const lightness = isDark ? 60 : 55;
+    const saturation = isDark ? 100 : 90;
+    setColor(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
 
-      // Glow size (small devices smaller)
-      setGlowSize(isSmallScreen ? 5 + avg / 20 : 10 + avg / 15);
-    }
+    setGlowSize(10 + avg / 15);
   });
 
-  // Small device: scaled down but with glow
-  if (isSmallScreen) {
-    return (
-      <Html center>
-        <div
-          className="flex justify-center items-center relative"
-          style={{ width: "fit-content", overflow: "invisible" }}
-        >
-          {/* Static gray shadow */}
-          <div
-            style={{
-              position: "absolute",
-              width: "60px",
-              height: "60px",
-              borderRadius: "50%",
-              background: "rgba(128,128,128,0.3)",
-              filter: "blur(15px)",
-              zIndex: -2,
-            }}
-          ></div>
-
-          {/* Dynamic glow */}
-          <div
-            style={{
-              position: "absolute",
-              width: `${glowSize * 2}px`,
-              height: `${glowSize * 2}px`,
-              borderRadius: "50%",
-              background: color,
-              filter: `blur(${glowSize}px)`,
-              opacity: 0.6,
-              zIndex: -1,
-            }}
-          ></div>
-
-          {/* Microphone */}
-          <FaMicrophone
-            style={{
-              fontSize: "80px",
-              color: color,
-              textShadow: `0 0 ${glowSize}px ${color}, 0 0 ${
-                glowSize * 2
-              }px ${color}, 0 0 ${glowSize * 3}px ${color}`,
-            }}
-          />
-        </div>
-      </Html>
-    );
-  }
-
-  // Large/medium devices
   return (
     <Html center>
       <div
         className="flex justify-center items-center relative"
         style={{
-          width: "fit-content",
-          transform: `scale(${scale})`,
+          width: isSmallScreen ? "80px" : "fit-content",
+          height: isSmallScreen ? "80px" : "fit-content",
+          transform: isSmallScreen ? "scale(1)" : `scale(${scale})`,
           transition: "transform 0.05s linear, color 0.1s linear",
           overflow: "visible",
         }}
       >
-        {/* Static gray shadow */}
+        {/* Static shadow */}
         <div
           style={{
             position: "absolute",
-            width: "150px",
-            height: "150px",
+            width: isSmallScreen ? "60px" : "150px",
+            height: isSmallScreen ? "60px" : "150px",
             borderRadius: "50%",
             background: "rgba(128,128,128,0.3)",
             filter: "blur(15px)",
             zIndex: -2,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
           }}
-        ></div>
+        />
 
         {/* Dynamic glow */}
         <div
           style={{
             position: "absolute",
-            width: `${glowSize * 4}px`,
-            height: `${glowSize * 4}px`,
-            borderRadius: "50%",
+            width: isSmallScreen ? "0px" : `${glowSize * 4}px`,
+            height: isSmallScreen ? "0px" : `${glowSize * 4}px`,
+            borderRadius: isSmallScreen ? "0%" : "50%",
             background: color,
-            filter: `blur(${glowSize}px)`,
+            filter: isSmallScreen ? "none" : `blur(${glowSize}px)`,
             opacity: 0.6,
             zIndex: -1,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
           }}
-        ></div>
+        />
 
         {/* Microphone */}
         <FaMicrophone
           style={{
-            fontSize: "clamp(2rem, 6vw, 4rem)",
+            fontSize: isSmallScreen ? "5rem" : "clamp(2rem, 6vw, 4rem)",
             color: color,
-            textShadow: `0 0 ${glowSize}px ${color}, 0 0 ${
-              glowSize * 2
-            }px ${color}, 0 0 ${glowSize * 3}px ${color}`,
+            textShadow: isSmallScreen
+              ? "none"
+              : `0 0 ${glowSize}px ${color}, 0 0 ${glowSize * 2}px ${color}, 0 0 ${glowSize * 3}px ${color}`,
+            display: "block",
+            position: "relative",
+            zIndex: 1,
           }}
         />
       </div>
