@@ -59,7 +59,7 @@ export function AudioMic() {
   return (
     <Html center>
       <div
-        className="flex justify-center items-center"
+         className="w-full h-full flex justify-center items-center relative"
         style={{
           position: "relative",
           width: "fit-content",
