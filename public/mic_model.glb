@@ -1,0 +1,12 @@
+loader.load(
+  "/mic_model.glb", // public folder থেকে
+  (gltf) => {
+    const micModel = gltf.scene;
+    micModel.scale.set(1, 1, 1);
+    micRef.current = micModel;
+  },
+  undefined,
+  (error) => {
+    console.error("GLTF load error:", error);
+  }
+);

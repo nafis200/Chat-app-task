@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import type { IMessage } from "@/types";
+import { FloatingDockDemo } from "./Floatingdock";
 
 const Chat_Application = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -15,6 +16,9 @@ const Chat_Application = () => {
 
   return (
     <div className="p-4 space-y-4">
+
+      <FloatingDockDemo/>
+
       {messages.map((msg, idx) => {
         const isUser = msg.role === "user";
         return (
