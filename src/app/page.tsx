@@ -1,7 +1,6 @@
 "use client";
 import { AudioParticles } from "@/components/module/Chat_Application/AudioParticles";
 import { Canvas } from "@react-three/fiber";
-import styles from "../styles/page.module.css"; // ✅ লোকালি apply হবে
 
 export default function Home() {
   return (
