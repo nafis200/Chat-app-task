@@ -1,12 +1,19 @@
-import Chat_Application from "@/components/module/Chat_Application/Chat_Application";
-import Mics from "@/components/module/Chat_Application/Homes";
-import Image from "next/image";
+
+import Mics from '@/components/module/Chat_Application/Mics';
+import '@/styles/globals.css';
 
 export default function Home() {
+  // return (
+  //   <div>
+  //     {/* <Chat_Application/> */}
+  //      <Mics/>
+  //   </div>
+  // );
   return (
-    <div>
-      {/* <Chat_Application/> */}
-       <Mics/>
-    </div>
+    <main className="p-6">
+      <h1 className="text-white text-2xl mb-4">Audio Reactive Particles</h1>
+      <Mics/>
+    </main>
   );
+
 }

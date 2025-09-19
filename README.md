@@ -107,3 +107,20 @@ ChatApplication/
 Email: nafisahamed14@gmail.com🌐 Portfolio: https://portfoliouser.vercel.app/
 
 Contact_No : ++880 1922208141(phone,whatsapp,telegram)
+
+
+
+# React + R3F ecosystem
+npm install three @react-three/fiber @react-three/drei
+
+# Shaders GLSL macro
+npm install babel-plugin-glsl
+
+# GUI controls
+npm install leva
+
+# TypeScript types (optional but recommended)
+npm install -D @types/three @types/react @types/react-dom
+
+
+<!-- https://codesandbox.io/p/sandbox/zgsyn?file=%2Fsrc%2Fshaders%2FsimulationMaterial.js%3A1%2C1-56%2C1 -->
