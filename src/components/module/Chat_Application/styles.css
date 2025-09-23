@@ -1,13 +1,13 @@
 .cardBorder {
   background-size: 200% 200%;
-  animation: borderMove 4s linear infinite;
+  animation: borderMove 1s linear infinite;
 }
 
 @keyframes borderMove {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 0%;
   }
   100% {
-    background-position: 200% 50%;
+    background-position: 100% 0%;
   }
-}
+} 
