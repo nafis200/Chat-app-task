@@ -8,9 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 type LoginProps = {
   onNext: (data: any) => void;
+  defaultValues?: any;
 };
 
-const Login = ({ onNext }: LoginProps) => {
+const Login = ({ onNext, defaultValues }: LoginProps) => {
   const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -21,7 +22,11 @@ const Login = ({ onNext }: LoginProps) => {
   };
 
   return (
-    <PHform onSubmit={loginSubmit} resolver={zodResolver(loginSchema)}>
+    <PHform
+      onSubmit={loginSubmit}
+      resolver={zodResolver(loginSchema)}
+      defaultValues={defaultValues}
+    >
       <PHinput type="email" name="email" placeholder="Email" />
       <PHinput type="password" name="password" placeholder="Password" />
       <Button type="submit" className="w-full mt-2">

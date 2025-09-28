@@ -7,18 +7,19 @@ import { Button } from "@/components/ui/button";
 type RegisterProps = {
   onNext: (data: any) => void;
   onPrev?: () => void;
+  defaultValues?: any;
 };
 
-const Register = ({ onNext, onPrev }: RegisterProps) => {
+const Register = ({ onNext, onPrev, defaultValues }: RegisterProps) => {
   const onSubmit = (data: any) => {
     onNext(data);
   };
 
   return (
-    <PHform onSubmit={onSubmit}>
+    <PHform onSubmit={onSubmit} defaultValues={defaultValues}>
       <PHinput type="text" name="name" placeholder="Full Name" />
-      <PHinput type="email" name="email" placeholder="Email" />
-      <PHinput type="password" name="password" placeholder="Password" />
+      <PHinput type="text" name="address" placeholder="Address" />
+      <PHinput type="password" name="postoffice" placeholder="postOffice" />
       <div className="flex justify-between mt-2">
         {onPrev && (
           <Button variant="secondary" onClick={onPrev}>
