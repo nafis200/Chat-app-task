@@ -35,8 +35,6 @@ const ImageUploader = ({
       control={control}
       render={({ field, fieldState: { error } }) => {
         const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-
-        // Initial load: defaultValues -> previews
         useEffect(() => {
           if (field.value && field.value.length > 0 && imagePreviews.length === 0) {
             const previews = field.value.map((file: File | string) =>
