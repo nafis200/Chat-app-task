@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import Sidebars from "./sidebars/Sidebars";
+
 import Register from "./Signup/Register";
 import Login from "./Signup/Login";
+import { Sidebars } from "./sidebars/Sidebars";
 
 const SidebarForm = () => {
   const [currentStep, setCurrentStep] = useState(0);

@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import PHform from "../form/PHform";
-import PHinput from "../form/PHinput";
+
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PHinput } from "../form/PHinput";
 
 type LoginProps = {
   onNext: (data: any) => void;
