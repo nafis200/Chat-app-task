@@ -36,8 +36,8 @@ export const Sidebars = ({ currentStep, completedSteps }: any) => {
           shadow-2xl lg:shadow-none
         `}
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div>
+        {/* <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div> */}
         
         <div className="relative z-10">
           <div className="mb-12 mt-12 lg:mt-0">
@@ -78,9 +78,6 @@ export const Sidebars = ({ currentStep, completedSteps }: any) => {
                       }`}>
                         {label}
                       </h3>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        {isCompleted ? "Completed" : isActive ? "In progress" : "Pending"}
-                      </p>
                     </div>
                   </div>
                   

@@ -19,6 +19,8 @@ const SidebarForm = () => {
 
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
+    const remainArray = completedSteps.filter((x)=> x != currentStep - 1)
+    setCompletedSteps(remainArray)
   };
 
   const handleSubmitAll = () => {
@@ -33,7 +35,7 @@ const SidebarForm = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-6 flex justify-center items-start">
-        <div className="w-full max-w-lg p-6 shadow-lg rounded-md bg-white">
+        <div className="w-full max-w-lg p-6 shadow-lg rounded-md">
           {currentStep === 0 && (
             <Login onNext={handleNext} defaultValues={formData} />
           )}
