@@ -54,7 +54,7 @@ export const PdfUploader = ({
           if (!files || files.length === 0) return;
           const selectedFile = files[0];
           setFile(selectedFile);
-          field.onChange([selectedFile]); // array আকারে pass করলাম
+          field.onChange([selectedFile]); 
         };
 
         const removeFile = () => {
@@ -86,7 +86,7 @@ export const PdfUploader = ({
             {!file && (
               <div
                 className={cn(
-                  "relative border-2 border-dashed rounded-2xl transition-all duration-200",
+                  "relative border-2 border-dashed rounded-2xl transition-all duration-200 dark:bg-black",
                   isDragging
                     ? "border-orange-500 bg-orange-50"
                     : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"

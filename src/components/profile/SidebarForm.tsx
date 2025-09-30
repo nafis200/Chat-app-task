@@ -34,8 +34,8 @@ const SidebarForm = () => {
       <Sidebars currentStep={currentStep} completedSteps={completedSteps} />
 
       {/* Main Content */}
-      <main className="flex-1 p-6 flex justify-center items-start">
-        <div className="w-full max-w-lg p-6 shadow-lg rounded-md">
+      <main className="flex-1 flex justify-center items-start">
+        <div className="w-full p-6 shadow-lg rounded-md">
           {currentStep === 0 && (
             <Login onNext={handleNext} defaultValues={formData} />
           )}

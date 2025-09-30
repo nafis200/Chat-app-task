@@ -60,7 +60,9 @@ const ImageUploader = ({
         }, [field.value]);
 
         const removeImage = (index: number) => {
-          const newFiles = field.value.filter((_: any, i: number) => i !== index);
+          const newFiles = field.value.filter(
+            (_: any, i: number) => i !== index
+          );
           field.onChange(newFiles);
         };
 
@@ -89,43 +91,6 @@ const ImageUploader = ({
         return (
           <div className={cn("flex flex-col gap-4", parentClassName)}>
             {label && <Label className="text-base font-medium">{label}</Label>}
-
-            {/* Upload Area */}
-            <div
-              className={cn(
-                "relative border-2 border-dashed rounded-2xl transition-all duration-200",
-                isDragging
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"
-              )}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-            >
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                multiple
-                onChange={(e) => handleFiles(e.target.files)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                id={`file-upload-${name}`}
-              />
-
-              <label
-                htmlFor={`file-upload-${name}`}
-                className="flex flex-col items-center justify-center py-12 px-6 cursor-pointer"
-              >
-                <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                  <Upload className="w-8 h-8 text-orange-500" strokeWidth={2} />
-                </div>
-
-                <h3 className="text-lg font-semibold text-orange-500 mb-1">
-                  Upload your profile
-                </h3>
-
-                <p className="text-sm text-gray-500">PNG, JPG up to 3MB</p>
-              </label>
-            </div>
 
             {/* Image Previews */}
             {imagePreviews.length > 0 && (
@@ -160,6 +125,43 @@ const ImageUploader = ({
                 ))}
               </div>
             )}
+
+            {/* Upload Area */}
+            <div
+              className={cn(
+                "relative border-2 border-dashed rounded-2xl transition-all duration-200 dark:bg-black",
+                isDragging
+                  ? "border-orange-500 bg-orange-50"
+                  : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"
+              )}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                multiple
+                onChange={(e) => handleFiles(e.target.files)}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                id={`file-upload-${name}`}
+              />
+
+              <label
+                htmlFor={`file-upload-${name}`}
+                className="flex flex-col items-center justify-center py-12 px-6 cursor-pointer"
+              >
+                <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-4">
+                  <Upload className="w-8 h-8 text-orange-500" strokeWidth={2} />
+                </div>
+
+                <h3 className="text-lg font-semibold text-orange-500 mb-1">
+                  Upload your profile
+                </h3>
+
+                <p className="text-sm text-gray-500">PNG, JPG up to 3MB</p>
+              </label>
+            </div>
 
             {error && (
               <small className="text-red-500 text-sm font-medium">

@@ -24,45 +24,60 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
   const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-
-    // Images validation
     images: z
-  .array(z.any())
-  .min(1, "At least one image is required")
-  .refine(
-    (files) =>
-      Array.from(files).every((file: File | string) => {
-        if (file instanceof File) {
-          return ["image/png", "image/jpeg", "image/jpg"].includes(file.type);
-        }
-        return true;
-      }),
-    "Only PNG or JPG images are allowed"
-  )
-  .refine(
-    (files) =>
-      Array.from(files).every((file: File | string) => {
-        if (file instanceof File) {
-          return file.size <= 3 * 1024 * 1024; 
-        }
-        return true;
-      }),
-    "Each image must be smaller than 3MB"
-  ),
-
+      .array(z.any())
+      .min(1, "At least one image is required")
+      .refine(
+        (files) =>
+          Array.from(files).every((file: File | string) => {
+            if (file instanceof File) {
+              return ["image/png", "image/jpeg", "image/jpg"].includes(
+                file.type
+              );
+            }
+            return true;
+          }),
+        "Only PNG or JPG images are allowed"
+      )
+      .refine(
+        (files) =>
+          Array.from(files).every((file: File | string) => {
+            if (file instanceof File) {
+              return file.size <= 3 * 1024 * 1024;
+            }
+            return true;
+          }),
+        "Each image must be smaller than 3MB"
+      ),
 
     pdf: z
       .array(z.any())
       .min(1, "At least one document is required")
       .refine(
         (files) =>
-          Array.from(files).every((file: File) =>
-            ["application/pdf", "application/msword", "text/plain"].includes(
-              file.type
-            )
-          ),
+          Array.from(files).every((file: File | string) => {
+            if (file instanceof File) {
+              return [
+                "application/pdf",
+                "application/msword",
+                "text/plain",
+              ].includes(file.type);
+            }
+            return true;
+          }),
         "Only PDF, DOC, or TXT files are allowed"
+      )
+      .refine(
+        (files) =>
+          Array.from(files).every((file: File | string) => {
+            if (file instanceof File) {
+              return file.size <= 5 * 1024 * 1024; 
+            }
+            return true;
+          }),
+        "Each document must be smaller than 5MB"
       ),
+
     bio: z.string().min(10, "Bio must be at least 10 characters"),
     terms: z.boolean().refine((val) => val === true, "You must accept terms"),
     country: z.string().min(1, "Country is required"),
@@ -114,8 +129,7 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
         ]}
       />
       <PHcheckbox name="terms" label="I agree to the terms and conditions" />
-      {/* <FileUploader name="pdf" /> */}
-      <PdfUploader name="pdf"/>
+      <PdfUploader name="pdf" />
       <Button type="submit" className="w-full mt-2">
         Login
       </Button>
