@@ -15,6 +15,13 @@ type DocUploaderProps = {
   parentClassName?: string;
 };
 
+type StoredFile = {
+  file?: File;       // actual File object
+  name: string;      // filename
+  type: string;      // file type
+  preview?: string;  // preview URL
+};
+
 export const FileUploader = ({
   name,
   label = "Upload Document",
@@ -22,15 +29,14 @@ export const FileUploader = ({
 }: DocUploaderProps) => {
   const { control } = useFormContext();
 
-  const getFileIcon = (file: File) => {
-    if (file.type === "application/pdf") return <AiFillFilePdf className="w-6 h-6 text-red-500" />;
+  const getFileIcon = (type: string) => {
+    if (type === "application/pdf") return <AiFillFilePdf className="w-6 h-6 text-red-500" />;
     if (
-      file.type === "application/msword" ||
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      type === "application/msword" ||
+      type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
       return <AiFillFileWord className="w-6 h-6 text-blue-500" />;
-    if (file.type === "text/plain") return <AiFillFileText className="w-6 h-6 text-green-500" />;
+    if (type === "text/plain") return <AiFillFileText className="w-6 h-6 text-green-500" />;
     return <AiFillFileText className="w-6 h-6 text-gray-500" />;
   };
 
@@ -39,48 +45,68 @@ export const FileUploader = ({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        const [file, setFile] = useState<File | null>(null);
+        const [storedFile, setStoredFile] = useState<StoredFile | null>(null);
 
-        // Pre-fill existing value
+        // Sync field.value with preview
         useEffect(() => {
-          if (field.value && Array.isArray(field.value)) {
-            setFile(field.value[0]);
+          if (field.value && Array.isArray(field.value) && field.value[0]) {
+            const val = field.value[0];
+            if (val instanceof File) {
+              const url = URL.createObjectURL(val);
+              setStoredFile({ file: val, name: val.name, type: val.type, preview: url });
+
+              return () => {
+                URL.revokeObjectURL(url);
+              };
+            } else if (typeof val === "object" && val.name) {
+              // Already stored format
+              setStoredFile(val as StoredFile);
+            }
+          } else {
+            setStoredFile(null);
           }
         }, [field.value]);
 
         const handleFileUpload = (files: File[]) => {
-          if (files.length > 0) {
-            const selectedFile = files[0];
-            setFile(selectedFile);
-            // Pass as array for Zod validation
-            field.onChange([selectedFile]);
-          }
+          if (files.length === 0) return;
+
+          const file = files[0];
+          const preview = URL.createObjectURL(file);
+          const obj: StoredFile = { file, name: file.name, type: file.type, preview };
+          setStoredFile(obj);
+          field.onChange([obj]);
         };
 
         const removeFile = () => {
-          setFile(null);
-          field.onChange([]); // empty array for Zod validation
+          if (storedFile?.preview) URL.revokeObjectURL(storedFile.preview);
+          setStoredFile(null);
+          field.onChange([]);
         };
 
         return (
           <div className={cn("flex flex-col gap-4", parentClassName)}>
             {label && <Label className="text-base font-medium justify-center">{label}</Label>}
 
-            {file ? (
+            {storedFile ? (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between border rounded-lg p-2 bg-gray-50 dark:bg-gray-900">
                   <span className="flex items-center gap-2 truncate">
-                    {getFileIcon(file)}
-                    {file.name}
+                    {getFileIcon(storedFile.type)}
+                    {storedFile.name}
                   </span>
-                  <Button variant="destructive" size="sm" onClick={removeFile} type="button">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={removeFile}
+                    type="button"
+                  >
                     <RiDeleteBinLine size={16} />
                   </Button>
                 </div>
 
-                {file.type === "application/pdf" && (
+                {storedFile.type === "application/pdf" && storedFile.preview && (
                   <iframe
-                    src={URL.createObjectURL(file)}
+                    src={storedFile.preview}
                     className="w-full h-60 md:h-80 lg:h-96 border rounded-lg"
                     title="PDF Preview"
                   />
