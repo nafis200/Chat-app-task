@@ -8,7 +8,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { EmojiExtension } from "./EmojiExtension";
-import { Button } from "@/components/ui/button"; // shadcn Button
+import { Button } from "@/components/ui/button";
+import { Bold, Italic, Smile } from "lucide-react";
 
 const Picker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
@@ -43,7 +44,7 @@ export const PHRichTextEditor = ({
           editorProps: {
             attributes: {
               className:
-                "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-0 focus:outline-none min-h-[150px]",
+                "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-0 focus:outline-none min-h-[150px] max-w-none dark:prose-invert",
             },
           },
           onUpdate: ({ editor }) => {
@@ -64,68 +65,113 @@ export const PHRichTextEditor = ({
         };
 
         return (
-          <div className="flex flex-col gap-2 w-full lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm mx-auto p-2 sm:p-4 -ml-2">
+          <div className="flex flex-col gap-4 w-full lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm mx-auto">
             {label && (
-              <label className="text-sm sm:text-base font-medium text-gray-700 dark:text-white">
+              <label className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {label}
               </label>
             )}
 
-            {/* Toolbar */}
-            <div className="flex gap-2 flex-wrap mb-2">
-              <Button
-                type="button"
-                size="sm"
-                variant={editor.isActive("bold") ? "default" : "outline"}
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className="min-w-[40px] text-center"
-              >
-                B
-              </Button>
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+              {/* Toolbar */}
+              <div className="flex items-center gap-1 p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 backdrop-blur-sm">
+                <div className="flex items-center gap-1">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={editor.isActive("bold") ? "default" : "ghost"}
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                      editor.isActive("bold")
+                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md hover:shadow-lg"
+                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                    title="Bold"
+                  >
+                    <Bold className="w-4 h-4" />
+                  </Button>
 
-              <Button
-                type="button"
-                size="sm"
-                variant={editor.isActive("italic") ? "default" : "outline"}
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className="min-w-[40px] text-center"
-              >
-                I
-              </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={editor.isActive("italic") ? "default" : "ghost"}
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                      editor.isActive("italic")
+                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md hover:shadow-lg"
+                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                    title="Italic"
+                  >
+                    <Italic className="w-4 h-4" />
+                  </Button>
 
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={addImage}
-                className="min-w-[50px] text-center"
-              >
-                Image
-              </Button>
+                  <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
 
-              <Button
-                type="button"
-                size="sm"
-                variant={showPicker ? "default" : "outline"}
-                onClick={() => setShowPicker(!showPicker)}
-                className="min-w-[40px] text-center"
-              >
-                😊
-              </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={addImage}
+                    className="h-9 px-3 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    title="Add Image"
+                  >
+                    <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="8.5" cy="8.5" r="1.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <polyline points="21 15 16 10 5 21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className="text-xs font-medium">Image</span>
+                  </Button>
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={showPicker ? "default" : "ghost"}
+                    onClick={() => setShowPicker(!showPicker)}
+                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                      showPicker
+                        ? "bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-md hover:shadow-lg"
+                        : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                    title="Add Emoji"
+                  >
+                    <Smile className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Emoji Picker */}
+              {showPicker && (
+                <div className="absolute top-16 left-3 z-50 shadow-2xl rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                  <Picker onEmojiClick={addEmoji} />
+                </div>
+              )}
+
+              {/* Editor */}
+              <div className="relative">
+                <EditorContent
+                  editor={editor}
+                  className="p-4 sm:p-6 min-h-[200px] prose-headings:font-bold prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-strong:text-gray-900 dark:prose-strong:text-gray-100 lg:max-w-screen-lg md:max-w-screen-md max-w-sm"
+                />
+                
+                {/* Bottom gradient fade */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-gray-900 to-transparent pointer-events-none" />
+              </div>
             </div>
-
-            {/* Emoji Picker */}
-            {showPicker && <Picker onEmojiClick={addEmoji} />}
-
-            {/* Editor */}
-            <EditorContent
-              editor={editor}
-              className="border rounded-lg p-2 min-h-[150px] lg:max-w-screen-lg max-w-sm md:max-w-md"
-            />
 
             {/* Error Message */}
             {error && (
-              <small className="text-red-500 text-sm">{error.message}</small>
+              <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-medium px-1">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {error.message}
+              </div>
             )}
           </div>
         );

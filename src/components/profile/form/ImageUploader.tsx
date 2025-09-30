@@ -83,33 +83,33 @@ const ImageUploader = ({
         };
 
         return (
-          <div className={cn("flex flex-col gap-4 w-full", parentClassName)}>
-            {label && <Label className="text-base font-medium">{label}</Label>}
+          <div className={cn("flex flex-col gap-5 w-full", parentClassName)}>
+            {label && <Label className="text-lg font-semibold text-gray-900 dark:text-gray-100">{label}</Label>}
 
             {/* Image Previews */}
             {imagePreviews.length > 0 && (
-              <div className="flex flex-wrap gap-3 mt-2 justify-start">
+              <div className="flex flex-wrap gap-4 mt-1 justify-center">
                 {imagePreviews.map((src, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-sm hover:shadow-md transition-shadow group flex-shrink-0",
+                      "relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-shrink-0 bg-white dark:bg-gray-800",
                       SIZE_CLASSES[size]
                     )}
                   >
                     <img src={src} alt={`Image ${index}`} className="object-cover w-full h-full" />
 
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black opacity-0 hover:opacity-30 transition-opacity duration-200" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                     <Button
                       variant="destructive"
                       size="sm"
                       type="button"
-                      className="absolute top-1.5 right-1.5 p-1.5 rounded-full bg-red-500 hover:bg-red-600 opacity-0 hover:opacity-100 transition-opacity shadow-lg"
+                      className="absolute top-2 right-2 p-2 rounded-lg bg-white/90 hover:bg-white text-red-600 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl backdrop-blur-sm"
                       onClick={() => removeImage(index)}
                     >
-                      <RiDeleteBinLine size={16} />
+                      <RiDeleteBinLine size={18} />
                     </Button>
                   </div>
                 ))}
@@ -119,10 +119,10 @@ const ImageUploader = ({
             {/* Upload Area */}
             <div
               className={cn(
-                "relative border-2 border-dashed rounded-2xl transition-all duration-200 w-full sm:max-w-lg mx-auto dark:bg-black",
+                "relative border-2 border-dashed rounded-xl transition-all duration-300 w-full sm:max-w-2xl mx-auto backdrop-blur-sm",
                 isDragging
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"
+                  ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 scale-105"
+                  : "border-gray-300 dark:border-gray-600 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg"
               )}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
@@ -139,23 +139,31 @@ const ImageUploader = ({
 
               <label
                 htmlFor={`file-upload-${name}`}
-                className="flex flex-col items-center justify-center py-10 px-4 sm:py-12 sm:px-6 cursor-pointer"
+                className="flex flex-col items-center justify-center py-12 px-6 sm:py-16 sm:px-8 cursor-pointer"
               >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange-100 flex items-center justify-center mb-3 sm:mb-4">
-                  <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" strokeWidth={2} />
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4 sm:mb-5 shadow-lg transform transition-transform duration-300 hover:scale-110">
+                  <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
                 </div>
 
-                <h3 className="text-md sm:text-lg font-semibold text-orange-500 mb-1">
+                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2">
                   Upload your profile
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-500 text-center">PNG, JPG up to 3MB</p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 text-center font-medium">
+                  PNG, JPG up to 3MB
+                </p>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 text-center mt-2">
+                  Drag and drop or click to browse
+                </p>
               </label>
             </div>
 
             {error && (
-              <small className="text-red-500 text-sm font-medium mt-1">
+              <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-medium mt-1 px-1">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
                 {error.message}
-              </small>
+              </div>
             )}
           </div>
         );
