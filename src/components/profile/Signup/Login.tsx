@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import PHform from "../form/PHform";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import { PHtextarea } from "../form/PHtextarea";
 import { PHselect } from "../form/PHselect";
 import { PHcheckbox } from "../form/PHcheckbox";
 import { PdfUploader } from "../form/PdfUploader";
+import { PHRichTextEditor } from "../form/PHRichTextEditor";
+
 
 type LoginProps = {
   onNext: (data: any) => void;
@@ -71,7 +73,7 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
         (files) =>
           Array.from(files).every((file: File | string) => {
             if (file instanceof File) {
-              return file.size <= 5 * 1024 * 1024; 
+              return file.size <= 5 * 1024 * 1024;
             }
             return true;
           }),
@@ -79,12 +81,12 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
       ),
 
     bio: z.string().min(10, "Bio must be at least 10 characters"),
+    description: z.string().min(10, "Bio must be at least 10 characters"),
     terms: z.boolean().refine((val) => val === true, "You must accept terms"),
     country: z.string().min(1, "Country is required"),
   });
 
   const loginSubmit = (data: any) => {
-    const pdfFile = data.pdf?.[0];
     console.log(data.pdf);
     onNext({
       ...data,
@@ -92,6 +94,8 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
       pdf: data.pdf,
     });
   };
+
+ 
 
   return (
     <PHform
@@ -130,6 +134,9 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
       />
       <PHcheckbox name="terms" label="I agree to the terms and conditions" />
       <PdfUploader name="pdf" />
+
+        <PHRichTextEditor name="description" label="Description" />
+
       <Button type="submit" className="w-full mt-2">
         Login
       </Button>
