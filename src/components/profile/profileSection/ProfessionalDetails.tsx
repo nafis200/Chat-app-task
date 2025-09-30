@@ -19,7 +19,7 @@ const professionalSchema = z.object({
   company: z.string().optional(),
   industry: z.string().optional(),
   experience_level: z.string().optional(),
-  years_of_experience: z.number().optional(),
+  years_of_experience: z.coerce.number().optional(),
   skills: z.string().optional(),
 });
 

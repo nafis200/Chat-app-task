@@ -27,7 +27,7 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
       defaultValues={defaultValues}
     >
       <PHcheckbox name="is_available_for_mock_interviews" label="Available for mock interviews" />
-      <PHRichTextEditor name="description" label="Additional Preferences" />
+      <PHRichTextEditor name="description" label="Description" />
 
       <div className="flex justify-between mt-2">
         {onPrev && <Button variant="secondary" onClick={onPrev}>Previous</Button>}

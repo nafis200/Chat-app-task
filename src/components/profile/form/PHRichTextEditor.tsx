@@ -44,7 +44,7 @@ export const PHRichTextEditor = ({
           editorProps: {
             attributes: {
               className:
-                "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-0 focus:outline-none min-h-[150px] max-w-none dark:prose-invert",
+                "prose prose-sm sm:prose-base lg:prose-lg focus:outline-none min-h-[150px] w-full dark:prose-invert prose-img:max-w-full prose-img:h-auto break-words",
             },
           },
           onUpdate: ({ editor }) => {
@@ -65,30 +65,30 @@ export const PHRichTextEditor = ({
         };
 
         return (
-          <div className="flex flex-col gap-4 w-full lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm mx-auto">
+          <div className="flex flex-col gap-4  px-2 sm:px-4">
             {label && (
-              <label className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <label className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {label}
               </label>
             )}
 
-            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl max-w-full">
               {/* Toolbar */}
-              <div className="flex items-center gap-1 p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 backdrop-blur-sm">
+              <div className="flex items-center gap-1 p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 backdrop-blur-sm flex-wrap">
                 <div className="flex items-center gap-1">
                   <Button
                     type="button"
                     size="sm"
                     variant={editor.isActive("bold") ? "default" : "ghost"}
                     onClick={() => editor.chain().focus().toggleBold().run()}
-                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                    className={`h-8 w-8 sm:h-9 sm:w-9 p-0 transition-all duration-200 ${
                       editor.isActive("bold")
                         ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md hover:shadow-lg"
                         : "hover:bg-gray-200 dark:hover:bg-gray-700"
                     }`}
                     title="Bold"
                   >
-                    <Bold className="w-4 h-4" />
+                    <Bold className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </Button>
 
                   <Button
@@ -96,32 +96,32 @@ export const PHRichTextEditor = ({
                     size="sm"
                     variant={editor.isActive("italic") ? "default" : "ghost"}
                     onClick={() => editor.chain().focus().toggleItalic().run()}
-                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                    className={`h-8 w-8 sm:h-9 sm:w-9 p-0 transition-all duration-200 ${
                       editor.isActive("italic")
                         ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md hover:shadow-lg"
                         : "hover:bg-gray-200 dark:hover:bg-gray-700"
                     }`}
                     title="Italic"
                   >
-                    <Italic className="w-4 h-4" />
+                    <Italic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </Button>
 
-                  <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
+                  <div className="w-px h-5 sm:h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
 
                   <Button
                     type="button"
                     size="sm"
                     variant="ghost"
                     onClick={addImage}
-                    className="h-9 px-3 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    className="h-8 sm:h-9 px-2 sm:px-3 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700"
                     title="Add Image"
                   >
-                    <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <circle cx="8.5" cy="8.5" r="1.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <polyline points="21 15 16 10 5 21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <span className="text-xs font-medium">Image</span>
+                    <span className="text-xs font-medium hidden sm:inline">Image</span>
                   </Button>
 
                   <Button
@@ -129,30 +129,31 @@ export const PHRichTextEditor = ({
                     size="sm"
                     variant={showPicker ? "default" : "ghost"}
                     onClick={() => setShowPicker(!showPicker)}
-                    className={`h-9 w-9 p-0 transition-all duration-200 ${
+                    className={`h-8 w-8 sm:h-9 sm:w-9 p-0 transition-all duration-200 ${
                       showPicker
                         ? "bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-md hover:shadow-lg"
                         : "hover:bg-gray-200 dark:hover:bg-gray-700"
                     }`}
                     title="Add Emoji"
                   >
-                    <Smile className="w-4 h-4" />
+                    <Smile className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </Button>
                 </div>
               </div>
 
               {/* Emoji Picker */}
               {showPicker && (
-                <div className="absolute top-16 left-3 z-50 shadow-2xl rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div className="absolute top-14 sm:top-16 left-2 sm:left-3 z-50 shadow-2xl rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
                   <Picker onEmojiClick={addEmoji} />
                 </div>
               )}
 
               {/* Editor */}
-              <div className="relative">
+              <div className="">
                 <EditorContent
                   editor={editor}
-                  className="p-4 sm:p-6 min-h-[200px] prose-headings:font-bold prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-strong:text-gray-900 dark:prose-strong:text-gray-100 lg:max-w-screen-lg md:max-w-screen-md max-w-sm"
+                   className="min-h-[200px] 
+                   w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[52rem] xl:w-[62rem]  p-3"
                 />
                 
                 {/* Bottom gradient fade */}
