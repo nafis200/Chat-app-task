@@ -8,8 +8,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { EmojiExtension } from "./EmojiExtension";
+import { Button } from "@/components/ui/button"; // shadcn Button
 
-// Emoji Picker (SSR safe)
 const Picker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
 type PHRichTextEditorProps = {
@@ -39,11 +39,11 @@ export const PHRichTextEditor = ({
             EmojiExtension,
           ],
           content: field.value || "",
-          immediatelyRender: false, // ✅ Correct place for SSR fix
+          immediatelyRender: false, // SSR fix
           editorProps: {
             attributes: {
               className:
-                "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-0 focus:outline-none",
+                "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-0 focus:outline-none min-h-[150px]",
             },
           },
           onUpdate: ({ editor }) => {
@@ -64,7 +64,7 @@ export const PHRichTextEditor = ({
         };
 
         return (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full max-w-screen-lg mx-auto p-6 -ml-2">
             {label && (
               <label className="text-sm font-medium text-gray-700 dark:text-white">
                 {label}
@@ -72,35 +72,39 @@ export const PHRichTextEditor = ({
             )}
 
             {/* Toolbar */}
-            <div className="flex gap-2 mb-2">
-              <button
+            <div className="flex gap-1 mb-2 flex-wrap">
+              <Button
                 type="button"
-                className="px-2 py-1 border rounded"
+                size="sm"
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleBold().run()}
               >
-                Bold
-              </button>
-              <button
+                B
+              </Button>
+              <Button
                 type="button"
-                className="px-2 py-1 border rounded"
+                size="sm"
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleItalic().run()}
               >
-                Italic
-              </button>
-              <button
+                I
+              </Button>
+              <Button
                 type="button"
-                className="px-2 py-1 border rounded"
+                size="sm"
+                variant="outline"
                 onClick={addImage}
               >
-                Attach Image
-              </button>
-              <button
+                Image
+              </Button>
+              <Button
                 type="button"
-                className="px-2 py-1 border rounded"
+                size="sm"
+                variant="outline"
                 onClick={() => setShowPicker(!showPicker)}
               >
-                Emoji
-              </button>
+                😊
+              </Button>
             </div>
 
             {/* Emoji Picker */}
@@ -109,7 +113,7 @@ export const PHRichTextEditor = ({
             {/* Editor */}
             <EditorContent
               editor={editor}
-              className="border p-2 min-h-[200px] rounded"
+              className="border p-2 rounded min-h-[150px]"
             />
 
             {/* Error Message */}

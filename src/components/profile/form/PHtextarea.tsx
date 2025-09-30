@@ -43,7 +43,7 @@ export const PHtextarea = ({
               rows={rows}
               placeholder={placeholder || label || name}
               disabled={disabled}
-              className={`w-full border-2 border-gray-200 focus:border-blue-500 transition-all duration-300 rounded-xl text-sm sm:text-base resize-none`}
+              className={`w-full max-w-screen-lg mx-auto border-2 border-gray-200 focus:border-blue-500 transition-all duration-300 rounded-xl text-sm sm:text-base resize-none`}
               value={field.value || ""}
             />
 
