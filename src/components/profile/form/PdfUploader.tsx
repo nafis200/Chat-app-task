@@ -26,16 +26,16 @@ export const PdfUploader = ({
 
   const getFileIcon = (file: File) => {
     if (file.type === "application/pdf")
-      return <AiFillFilePdf className="w-6 h-6 text-red-500" />;
+      return <AiFillFilePdf className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />;
     if (
       file.type === "application/msword" ||
       file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
-      return <AiFillFileWord className="w-6 h-6 text-blue-500" />;
+      return <AiFillFileWord className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />;
     if (file.type === "text/plain")
-      return <AiFillFileText className="w-6 h-6 text-green-500" />;
-    return <AiFillFileText className="w-6 h-6 text-gray-500" />;
+      return <AiFillFileText className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />;
+    return <AiFillFileText className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />;
   };
 
   return (
@@ -43,7 +43,7 @@ export const PdfUploader = ({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        // prefill handle
+        // Prefill handle
         useEffect(() => {
           if (field.value && Array.isArray(field.value) && field.value[0]) {
             setFile(field.value[0]);
@@ -54,7 +54,7 @@ export const PdfUploader = ({
           if (!files || files.length === 0) return;
           const selectedFile = files[0];
           setFile(selectedFile);
-          field.onChange([selectedFile]); 
+          field.onChange([selectedFile]);
         };
 
         const removeFile = () => {
@@ -79,14 +79,14 @@ export const PdfUploader = ({
         };
 
         return (
-          <div className={cn("flex flex-col gap-4", parentClassName)}>
+          <div className={cn("flex flex-col gap-4 w-full", parentClassName)}>
             {label && <Label className="text-base font-medium">{label}</Label>}
 
             {/* Upload Area */}
             {!file && (
               <div
                 className={cn(
-                  "relative border-2 border-dashed rounded-2xl transition-all duration-200 dark:bg-black",
+                  "relative border-2 border-dashed rounded-2xl transition-all duration-200 w-full sm:max-w-lg mx-auto dark:bg-black",
                   isDragging
                     ? "border-orange-500 bg-orange-50"
                     : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"
@@ -105,25 +105,27 @@ export const PdfUploader = ({
 
                 <label
                   htmlFor={`file-upload-${name}`}
-                  className="flex flex-col items-center justify-center py-12 px-6 cursor-pointer"
+                  className="flex flex-col items-center justify-center py-10 px-4 sm:py-12 sm:px-6 cursor-pointer"
                 >
-                  <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                    <Upload className="w-8 h-8 text-orange-500" strokeWidth={2} />
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange-100 flex items-center justify-center mb-3 sm:mb-4">
+                    <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" strokeWidth={2} />
                   </div>
 
-                  <h3 className="text-lg font-semibold text-orange-500 mb-1">
+                  <h3 className="text-md sm:text-lg font-semibold text-orange-500 mb-1 text-center">
                     Upload your file
                   </h3>
-                  <p className="text-sm text-gray-500">PDF, DOC, TXT up to 5MB</p>
+                  <p className="text-xs sm:text-sm text-gray-500 text-center">
+                    PDF, DOC, TXT up to 5MB
+                  </p>
                 </label>
               </div>
             )}
 
             {/* File Preview */}
             {file && (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 w-full sm:max-w-lg mx-auto">
                 <div className="flex items-center justify-between border rounded-lg p-3 bg-gray-50 shadow-sm">
-                  <span className="flex items-center gap-2 truncate">
+                  <span className="flex items-center gap-2 truncate text-sm sm:text-base">
                     {getFileIcon(file)}
                     {file.name}
                   </span>
@@ -141,7 +143,7 @@ export const PdfUploader = ({
                 {file.type === "application/pdf" && (
                   <iframe
                     src={URL.createObjectURL(file)}
-                    className="w-full h-60 md:h-80 lg:h-96 border rounded-lg"
+                    className="w-full h-48 sm:h-60 md:h-72 lg:h-80 border rounded-lg"
                     title="PDF Preview"
                   />
                 )}
@@ -149,7 +151,7 @@ export const PdfUploader = ({
             )}
 
             {error && (
-              <small className="text-red-500 text-sm font-medium">
+              <small className="text-red-500 text-sm font-medium mt-1">
                 {error.message}
               </small>
             )}

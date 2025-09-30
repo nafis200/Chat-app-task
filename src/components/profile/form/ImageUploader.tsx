@@ -16,9 +16,9 @@ type ImageUploaderProps = {
 };
 
 const SIZE_CLASSES = {
-  small: "w-32 h-32",
-  medium: "w-48 h-48",
-  large: "w-64 h-64",
+  small: "w-24 h-24 sm:w-32 sm:h-32",
+  medium: "w-32 h-32 sm:w-48 sm:h-48",
+  large: "w-48 h-48 sm:w-64 sm:h-64",
 };
 
 const ImageUploader = ({
@@ -37,18 +37,14 @@ const ImageUploader = ({
         const [imagePreviews, setImagePreviews] = useState<string[]>([]);
         const [isDragging, setIsDragging] = useState(false);
 
-        // Preview generate করা এবং clean-up
+        // Generate preview URLs
         useEffect(() => {
           const urls: string[] = [];
 
           if (field.value && field.value.length > 0) {
             field.value.forEach((file: File | string) => {
-              if (file instanceof File) {
-                const url = URL.createObjectURL(file);
-                urls.push(url);
-              } else if (typeof file === "string") {
-                urls.push(file);
-              }
+              if (file instanceof File) urls.push(URL.createObjectURL(file));
+              else if (typeof file === "string") urls.push(file);
             });
           }
 
@@ -60,9 +56,7 @@ const ImageUploader = ({
         }, [field.value]);
 
         const removeImage = (index: number) => {
-          const newFiles = field.value.filter(
-            (_: any, i: number) => i !== index
-          );
+          const newFiles = field.value.filter((_: any, i: number) => i !== index);
           field.onChange(newFiles);
         };
 
@@ -89,37 +83,33 @@ const ImageUploader = ({
         };
 
         return (
-          <div className={cn("flex flex-col gap-4", parentClassName)}>
+          <div className={cn("flex flex-col gap-4 w-full", parentClassName)}>
             {label && <Label className="text-base font-medium">{label}</Label>}
 
             {/* Image Previews */}
             {imagePreviews.length > 0 && (
-              <div className="flex flex-wrap gap-4 mt-2">
+              <div className="flex flex-wrap gap-3 mt-2 justify-start">
                 {imagePreviews.map((src, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-sm hover:shadow-md transition-shadow group",
+                      "relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-sm hover:shadow-md transition-shadow group flex-shrink-0",
                       SIZE_CLASSES[size]
                     )}
                   >
-                    <img
-                      src={src}
-                      alt={`Image ${index}`}
-                      className="object-cover w-full h-full"
-                    />
+                    <img src={src} alt={`Image ${index}`} className="object-cover w-full h-full" />
 
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black opacity-0 hover:opacity-40 transition-opacity duration-200" />
+                    <div className="absolute inset-0 bg-black opacity-0 hover:opacity-30 transition-opacity duration-200" />
 
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="absolute top-2 right-2 p-2 rounded-full bg-red-500 hover:bg-red-600 opacity-0 hover:opacity-100 transition-opacity duration-200 shadow-lg"
-                      onClick={() => removeImage(index)}
                       type="button"
+                      className="absolute top-1.5 right-1.5 p-1.5 rounded-full bg-red-500 hover:bg-red-600 opacity-0 hover:opacity-100 transition-opacity shadow-lg"
+                      onClick={() => removeImage(index)}
                     >
-                      <RiDeleteBinLine size={18} />
+                      <RiDeleteBinLine size={16} />
                     </Button>
                   </div>
                 ))}
@@ -129,7 +119,7 @@ const ImageUploader = ({
             {/* Upload Area */}
             <div
               className={cn(
-                "relative border-2 border-dashed rounded-2xl transition-all duration-200 dark:bg-black",
+                "relative border-2 border-dashed rounded-2xl transition-all duration-200 w-full sm:max-w-lg mx-auto dark:bg-black",
                 isDragging
                   ? "border-orange-500 bg-orange-50"
                   : "border-gray-300 bg-gray-50 hover:border-orange-400 hover:bg-orange-50/30"
@@ -149,22 +139,21 @@ const ImageUploader = ({
 
               <label
                 htmlFor={`file-upload-${name}`}
-                className="flex flex-col items-center justify-center py-12 px-6 cursor-pointer"
+                className="flex flex-col items-center justify-center py-10 px-4 sm:py-12 sm:px-6 cursor-pointer"
               >
-                <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                  <Upload className="w-8 h-8 text-orange-500" strokeWidth={2} />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange-100 flex items-center justify-center mb-3 sm:mb-4">
+                  <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" strokeWidth={2} />
                 </div>
 
-                <h3 className="text-lg font-semibold text-orange-500 mb-1">
+                <h3 className="text-md sm:text-lg font-semibold text-orange-500 mb-1">
                   Upload your profile
                 </h3>
-
-                <p className="text-sm text-gray-500">PNG, JPG up to 3MB</p>
+                <p className="text-xs sm:text-sm text-gray-500 text-center">PNG, JPG up to 3MB</p>
               </label>
             </div>
 
             {error && (
-              <small className="text-red-500 text-sm font-medium">
+              <small className="text-red-500 text-sm font-medium mt-1">
                 {error.message}
               </small>
             )}

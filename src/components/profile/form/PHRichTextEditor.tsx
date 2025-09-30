@@ -39,7 +39,7 @@ export const PHRichTextEditor = ({
             EmojiExtension,
           ],
           content: field.value || "",
-          immediatelyRender: false, // SSR fix
+          immediatelyRender: false,
           editorProps: {
             attributes: {
               className:
@@ -64,44 +64,51 @@ export const PHRichTextEditor = ({
         };
 
         return (
-          <div className="flex flex-col gap-2 w-full max-w-screen-lg mx-auto p-6 -ml-2">
+          <div className="flex flex-col gap-2 w-full lg:max-w-screen-lg md:max-w-screen-md max-w-screen-sm mx-auto p-2 sm:p-4 -ml-2">
             {label && (
-              <label className="text-sm font-medium text-gray-700 dark:text-white">
+              <label className="text-sm sm:text-base font-medium text-gray-700 dark:text-white">
                 {label}
               </label>
             )}
 
             {/* Toolbar */}
-            <div className="flex gap-1 mb-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap mb-2">
               <Button
                 type="button"
                 size="sm"
-                variant="outline"
+                variant={editor.isActive("bold") ? "default" : "outline"}
                 onClick={() => editor.chain().focus().toggleBold().run()}
+                className="min-w-[40px] text-center"
               >
                 B
               </Button>
+
               <Button
                 type="button"
                 size="sm"
-                variant="outline"
+                variant={editor.isActive("italic") ? "default" : "outline"}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
+                className="min-w-[40px] text-center"
               >
                 I
               </Button>
+
               <Button
                 type="button"
                 size="sm"
                 variant="outline"
                 onClick={addImage}
+                className="min-w-[50px] text-center"
               >
                 Image
               </Button>
+
               <Button
                 type="button"
                 size="sm"
-                variant="outline"
+                variant={showPicker ? "default" : "outline"}
                 onClick={() => setShowPicker(!showPicker)}
+                className="min-w-[40px] text-center"
               >
                 😊
               </Button>
@@ -113,7 +120,7 @@ export const PHRichTextEditor = ({
             {/* Editor */}
             <EditorContent
               editor={editor}
-              className="border p-2 rounded min-h-[150px]"
+              className="border rounded-lg p-2 min-h-[150px] lg:max-w-screen-lg max-w-sm md:max-w-md"
             />
 
             {/* Error Message */}
