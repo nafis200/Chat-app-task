@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PHinput } from "../form/PHinput";
 import { AiFillApple } from "react-icons/ai";
 
-import { FileUploader } from "../form/FileUploader";
 import ImageUploader from "../form/ImageUploader";
 import { PHtextarea } from "../form/PHtextarea";
 import { PHselect } from "../form/PHselect";
@@ -138,7 +137,7 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
         <PHRichTextEditor name="description" label="Description" />
 
       <Button type="submit" className="w-full mt-2">
-        Login
+        next
       </Button>
     </PHform>
   );

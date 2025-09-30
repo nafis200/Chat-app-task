@@ -26,7 +26,7 @@ const Register = ({ onNext, onPrev, defaultValues }: RegisterProps) => {
             Previous
           </Button>
         )}
-        <Button type="submit">Next</Button>
+        <Button type="submit">next</Button>
       </div>
     </PHform>
   );

@@ -1,10 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-
-import Register from "./Signup/Register";
-import Login from "./Signup/Login";
 import { Sidebars } from "./sidebars/Sidebars";
+import PersonalInformation from "./profileSection/PersonalInformation";
+import ProfessionalDetails from "./profileSection/ProfessionalDetails";
+import SecurityAccount from "./profileSection/SecurityAccount";
+import ProfileImageUpload from "./profileSection/ProfileImageUpload";
+import ResumePortfolio from "./profileSection/ResumePortfolio";
+import AvailabilityPreferences from "./profileSection/AvailabilityPreferences";
+import ReviewSubmit from "./profileSection/ReviewSubmit";
 
 const SidebarForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -19,45 +22,66 @@ const SidebarForm = () => {
 
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
-    const remainArray = completedSteps.filter((x)=> x != currentStep - 1)
-    setCompletedSteps(remainArray)
+    const remainArray = completedSteps.filter((x) => x != currentStep - 1);
+    setCompletedSteps(remainArray);
   };
 
   const handleSubmitAll = () => {
     console.log("All Form Data:", formData);
     alert("✅ All data submitted! Check console.");
+    setFormData({});
   };
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
       <Sidebars currentStep={currentStep} completedSteps={completedSteps} />
-
-      {/* Main Content */}
-      <main className="flex-1 flex justify-center items-start">
+      <main className="flex-1 flex justify-center items-start p-6">
         <div className="w-full p-6 shadow-lg rounded-md">
           {currentStep === 0 && (
-            <Login onNext={handleNext} defaultValues={formData} />
+            <PersonalInformation onNext={handleNext} defaultValues={formData} />
           )}
           {currentStep === 1 && (
-            <Register
+            <ProfessionalDetails
               onNext={handleNext}
               onPrev={handlePrev}
               defaultValues={formData}
             />
           )}
           {currentStep === 2 && (
-            <div className="text-center">
-              <h2 className="text-2xl font-bold mb-4">Review & Submit</h2>
-              <pre className="bg-gray-100 p-4 rounded text-left">
-                {JSON.stringify(formData, null, 2)}
-              </pre>
-              <Button className="w-full mt-4" onClick={handleSubmitAll}>
-                Submit All
-              </Button>
-              <Button variant="secondary" onClick={handlePrev}>
-                Previous
-              </Button>
+            <SecurityAccount
+              onNext={handleNext}
+              onPrev={handlePrev}
+              defaultValues={formData}
+            />
+          )}
+          {currentStep === 3 && (
+            <ProfileImageUpload
+              onNext={handleNext}
+              onPrev={handlePrev}
+              defaultValues={formData}
+            />
+          )}
+          {currentStep === 4 && (
+            <ResumePortfolio
+              onNext={handleNext}
+              onPrev={handlePrev}
+              defaultValues={formData}
+            />
+          )}
+          {currentStep === 5 && (
+            <AvailabilityPreferences
+              onNext={handleNext}
+              onPrev={handlePrev}
+              defaultValues={formData}
+            />
+          )}
+          {currentStep === 6 && (
+            <div>
+              <ReviewSubmit
+                formData={formData}
+                onPrev={handlePrev}
+                onSubmitAll={handleSubmitAll}
+              />
             </div>
           )}
         </div>

@@ -4,7 +4,16 @@ import { useState } from "react";
 
 export const Sidebars = ({ currentStep, completedSteps }: any) => {
   const [isOpen, setIsOpen] = useState(false);
-  const steps = ["Login", "Register", "Review"];
+  const steps = [
+  "Personal Information",
+  "Professional Details",
+  "Security & Account Settings",
+  "Profile Image Upload",
+  "Resume Section",
+  "Availability & Preferences",
+  "OverView Informatiom"
+];
+
 
   return (
     <>
@@ -28,7 +37,7 @@ export const Sidebars = ({ currentStep, completedSteps }: any) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:relative inset-y-0 left-0 z-40
+          fixed lg:relative lg:inset-y-0 left-0 z-40
           w-80 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 
           p-8 flex flex-col overflow-hidden
           transform transition-transform duration-300 ease-in-out
@@ -39,7 +48,7 @@ export const Sidebars = ({ currentStep, completedSteps }: any) => {
         {/* <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div> */}
         
-        <div className="relative z-10">
+        <div className="fixed z-10">
           <div className="mb-12 mt-12 lg:mt-0">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-6 h-6 text-blue-400" />
@@ -54,7 +63,7 @@ export const Sidebars = ({ currentStep, completedSteps }: any) => {
               const isActive = currentStep === index;
 
               return (
-                <div key={index} className="relative">
+                <div key={index} className="">
                   <div className="flex items-center gap-4">
                     <div className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-500 ${
                       isCompleted 
