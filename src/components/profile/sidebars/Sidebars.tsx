@@ -1,5 +1,6 @@
 import { CheckCircle, Sparkles, Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import './Sidebars.css'
 
 export const Sidebars = ({ currentStep, completedSteps }: any) => {
   const [isOpen, setIsOpen] = useState(false);
