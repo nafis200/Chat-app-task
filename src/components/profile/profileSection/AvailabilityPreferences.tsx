@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import PHform from "../form/PHform";
-import { PHcheckbox } from "../form/PHcheckbox";
-import { PHRichTextEditor } from "../form/PHRichTextEditor";
+
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, MessageSquare, CheckCircle2, Sparkles } from "lucide-react";
+import Cform from "../form/CHform";
+import { Ccheckbox } from "../form/Ccheckbox";
+import { CRichTextEditor } from "../form/CRichTextEditor";
 
 type AvailabilityProps = {
   onNext: (data: any) => void;
@@ -20,7 +21,11 @@ const availabilitySchema = z.object({
   description: z.string().optional(),
 });
 
-const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: AvailabilityProps) => {
+const AvailabilityPreferences = ({
+  onNext,
+  onPrev,
+  defaultValues,
+}: AvailabilityProps) => {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8 text-center">
@@ -37,7 +42,7 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
 
       {/* Form Card */}
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <PHform
+        <Cform
           onSubmit={onNext}
           resolver={zodResolver(availabilitySchema)}
           defaultValues={defaultValues}
@@ -55,12 +60,13 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
 
             {/* Checkbox Card */}
             <div className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 rounded-xl p-6 border border-violet-200 dark:border-violet-800">
-              <PHcheckbox 
-                name="is_available_for_mock_interviews" 
-                label="Available for mock interviews" 
+              <Ccheckbox
+                name="is_available_for_mock_interviews"
+                label="Available for mock interviews"
               />
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-6">
-                Enable this to let others know you're open to participating in practice interview sessions
+                Enable this to let others know you're open to participating in
+                practice interview sessions
               </p>
             </div>
 
@@ -121,13 +127,15 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
               </h3>
             </div>
 
-            <PHRichTextEditor 
-              name="description" 
-              label="Description" 
+            <CRichTextEditor
+              name="description"
+              label="Description"
               className="w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[40rem] xl:w-[50rem]"
             />
             <p className="text-sm text-gray-500 dark:text-gray-400 -mt-4">
-              Share your background, expertise, or what you're looking to practice. This helps others understand your experience level and areas of interest.
+              Share your background, expertise, or what you're looking to
+              practice. This helps others understand your experience level and
+              areas of interest.
             </p>
           </div>
 
@@ -167,10 +175,10 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
               Complete Setup
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
-     <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-6 flex justify-center gap-2">
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
@@ -179,8 +187,6 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
         <div className="w-8 h-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-500 dark:to-rose-500"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
       </div>
-
-  
     </div>
   );
 };

@@ -1,27 +1,26 @@
 "use client";
 
 import { Controller, useFormContext } from "react-hook-form";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-type PHPhoneInputProps = {
+type inputProps = {
   name: string;
-  label?: string;
+  type?: string;
   placeholder?: string;
-  disabled?: boolean;
+  label?: string;
   icon?: any;
-  defaultCountry?: string;
+  disabled?: boolean;
 };
 
-export const PHPhoneInput = ({
+export const Cinput = ({
+  type = "text",
   name,
-  label,
   placeholder,
-  disabled = false,
+  label,
   icon: Icon,
-  defaultCountry = "us",
-}: PHPhoneInputProps) => {
+  disabled = false,
+}: inputProps) => {
   const { control } = useFormContext();
 
   return (
@@ -41,26 +40,23 @@ export const PHPhoneInput = ({
         control={control}
         render={({ field, fieldState: { error } }) => (
           <>
-            <div className="relative w-full">
+            <div className="relative flex items-center w-full">
               {/* Icon */}
               {Icon && (
-                <Icon className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
               )}
 
-              {/* Phone Input */}
-              <PhoneInput
+              {/* Input */}
+              <Input
                 {...field}
-                country={defaultCountry}
-                value={field.value || ""}
-                onChange={(value: any) => field.onChange(value)}
+                id={name}
+                type={type}
+                placeholder={placeholder || label || name}
                 disabled={disabled}
-                disableCountryCode={false} 
-                enableAreaCodes={true}
-                inputProps={{
-                  name,
-                  placeholder: placeholder || label || name,
-                  className: `w-full h-12 border-2 border-gray-200 rounded-lg pl-14 ml-2`,
-                }}
+                value={field.value || ""}
+                className={`w-full h-10 sm:h-12 md:h-12 border-2 border-gray-200 focus:border-blue-500 rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-300
+                  ${Icon ? "pl-10 sm:pl-11" : "px-3 sm:px-4"}
+                `}
               />
             </div>
 

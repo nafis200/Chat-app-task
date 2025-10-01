@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import PHform from "../form/PHform";
-import { PHinput } from "../form/PHinput";
+import PHform from "../form/CHform";
+import { PHinput } from "../form/Cinput";
 import { Button } from "@/components/ui/button";
 
 type RegisterProps = {

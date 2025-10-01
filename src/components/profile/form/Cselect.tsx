@@ -15,7 +15,7 @@ type Option = {
   label: string;
 };
 
-type PHselectProps = {
+type selectProps = {
   name: string;
   label?: string;
   placeholder?: string;
@@ -23,13 +23,13 @@ type PHselectProps = {
   disabled?: boolean;
 };
 
-export const PHselect = ({
+export const Cselect = ({
   name,
   label,
   placeholder = "Select an option",
   options,
   disabled = false,
-}: PHselectProps) => {
+}: selectProps) => {
   const { control } = useFormContext();
 
   return (

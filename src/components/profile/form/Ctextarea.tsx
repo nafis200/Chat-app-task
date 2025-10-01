@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-type PHtextareaProps = {
+type textareaProps = {
   name: string;
   placeholder?: string;
   label?: string;
@@ -12,13 +12,13 @@ type PHtextareaProps = {
   rows?: number;
 };
 
-export const PHtextarea = ({
+export const Ctextarea = ({
   name,
   placeholder,
   label,
   disabled = false,
   rows = 4,
-}: PHtextareaProps) => {
+}: textareaProps) => {
   const { control } = useFormContext();
 
   return (

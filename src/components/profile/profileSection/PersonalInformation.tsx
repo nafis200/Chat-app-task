@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useMemo } from "react";
-import PHform from "../form/PHform";
-import { PHinput } from "../form/PHinput";
-import { PHselect } from "../form/PHselect";
+import PHform from "../form/CHform";
+
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { allTimezones } from "react-timezone-select";
 import countryList from "react-select-country-list";
 import languageOptions from "./language";
-import { PHPhoneInput } from "../form/PHPhoneInput";
-import { User, Globe, Phone} from "lucide-react";
+import { User, Globe, Phone } from "lucide-react";
+import Cform from "../form/CHform";
+import { Cinput } from "../form/Cinput";
+import { CPhoneInput } from "../form/CHPhoneInput";
+import { Cselect } from "../form/Cselect";
 
 const timezoneOptions = Object.entries(allTimezones).map(([key, label]) => ({
   value: key,
@@ -36,10 +38,7 @@ const personalSchema = z.object({
     .regex(/^\+?[0-9]{10,15}$/, "Invalid phone number"),
 });
 
-const PersonalInformation = ({
-  onNext,
-  defaultValues,
-}: PersonalInfoProps) => {
+const PersonalInformation = ({ onNext, defaultValues }: PersonalInfoProps) => {
   const options = useMemo(() => {
     return countryList()
       .getData()
@@ -59,9 +58,7 @@ const PersonalInformation = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-
       <div className="mb-8 text-center">
-       
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Personal Information
         </h2>
@@ -70,9 +67,8 @@ const PersonalInformation = ({
         </p>
       </div>
 
-  
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <PHform
+        <Cform
           onSubmit={onNext}
           resolver={zodResolver(personalSchema)}
           defaultValues={defaultValues}
@@ -88,12 +84,12 @@ const PersonalInformation = ({
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <PHinput
+              <Cinput
                 name="username"
                 label="Username"
                 placeholder="e.g. johndoe123"
               />
-              <PHinput
+              <Cinput
                 name="full_name"
                 label="Full Name"
                 placeholder="e.g. John Doe"
@@ -101,10 +97,9 @@ const PersonalInformation = ({
             </div>
           </div>
 
-     
           <div className="space-y-6 mt-8">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center dark:bg-black">
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center dark:bg-black">
                 <Phone className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -112,7 +107,7 @@ const PersonalInformation = ({
               </h3>
             </div>
 
-            <PHPhoneInput
+            <CPhoneInput
               name="phone"
               label="Phone Number"
               placeholder="Enter phone number"
@@ -120,7 +115,6 @@ const PersonalInformation = ({
             />
           </div>
 
-         
           <div className="space-y-6 mt-8">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center dark:bg-black">
@@ -132,13 +126,13 @@ const PersonalInformation = ({
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <PHselect
+              <Cselect
                 name="location"
                 label="Location"
                 placeholder="Select your country"
                 options={options}
               />
-              <PHselect
+              <Cselect
                 name="timezone"
                 label="Timezone"
                 placeholder="Select your timezone"
@@ -146,7 +140,7 @@ const PersonalInformation = ({
               />
             </div>
 
-            <PHselect
+            <Cselect
               name="language"
               label="Preferred Language"
               placeholder="Select your language"
@@ -154,7 +148,6 @@ const PersonalInformation = ({
             />
           </div>
           <div className="flex items-center justify-end mt-10 pt-6 border-t border-gray-200 dark:border-gray-800">
-            
             <Button
               type="submit"
               className="px-8 py-2.5 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500 dark:hover:from-blue-600 dark:hover:to-cyan-600 text-white shadow-lg hover:shadow-xl transition-all"
@@ -175,11 +168,10 @@ const PersonalInformation = ({
               </svg>
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
-   
-       <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-6 flex justify-center gap-2">
         <div className="w-8 h-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-500 dark:to-rose-500"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
@@ -188,7 +180,6 @@ const PersonalInformation = ({
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
         <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
       </div>
-
     </div>
   );
 };

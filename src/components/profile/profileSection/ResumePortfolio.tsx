@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import PHform from "../form/PHform";
+
 import { PdfUploader } from "../form/PdfUploader";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileText, Upload, CheckCircle2, Sparkles, Shield } from "lucide-react";
+import { FileText,CheckCircle2, Sparkles, Shield } from "lucide-react";
+import Cform from "../form/CHform";
 
 type ResumeProps = {
   onNext: (data: any) => void;
@@ -21,7 +22,6 @@ const resumeSchema = z.object({
 const ResumePortfolio = ({ onNext, onPrev, defaultValues }: ResumeProps) => {
   return (
     <div className="w-full max-w-4xl mx-auto">
-    
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Resume & Portfolio
@@ -31,14 +31,12 @@ const ResumePortfolio = ({ onNext, onPrev, defaultValues }: ResumeProps) => {
         </p>
       </div>
 
-   
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <PHform
+        <Cform
           onSubmit={onNext}
           resolver={zodResolver(resumeSchema)}
           defaultValues={defaultValues}
         >
-  
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-8 rounded-lg bg-pink-50 dark:bg-pink-950 flex items-center justify-center">
@@ -49,12 +47,10 @@ const ResumePortfolio = ({ onNext, onPrev, defaultValues }: ResumeProps) => {
               </h3>
             </div>
 
-      
             <div className="flex justify-center">
               <PdfUploader name="resume_url" />
             </div>
 
-         
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
               <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                 <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
@@ -141,7 +137,7 @@ const ResumePortfolio = ({ onNext, onPrev, defaultValues }: ResumeProps) => {
               </svg>
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
       <div className="mt-6 flex justify-center gap-2">

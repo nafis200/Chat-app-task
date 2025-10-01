@@ -13,19 +13,19 @@ import { Bold, Italic, Smile } from "lucide-react";
 import clsx from "clsx";
 const Picker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
-type PHRichTextEditorProps = {
+type TRichTextEditorProps = {
   name: string;
   label?: string;
   placeholder?: string;
   className?:string
 };
 
-export const PHRichTextEditor = ({
+export const CRichTextEditor = ({
   name,
   label,
   className,
   placeholder = "Type something...",
-}: PHRichTextEditorProps) => {
+}: TRichTextEditorProps) => {
   const { control } = useFormContext();
   const [showPicker, setShowPicker] = useState(false);
 

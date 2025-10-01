@@ -14,7 +14,7 @@ type TFormProps = {
   resolver?: any;
 };
 
-const PHform = ({ onSubmit, children, defaultValues, resolver }: TFormProps) => {
+const Cform = ({ onSubmit, children, defaultValues, resolver }: TFormProps) => {
   const methods = useForm({ defaultValues, resolver });
 
   const submit: SubmitHandler<FieldValues> = (data) => {
@@ -31,4 +31,4 @@ const PHform = ({ onSubmit, children, defaultValues, resolver }: TFormProps) => 
   );
 };
 
-export default PHform;
+export default Cform;

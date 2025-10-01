@@ -1,12 +1,15 @@
 "use client";
 
 import React from "react";
-import PHform from "../form/PHform";
+
 import ImageUploader from "../form/ImageUploader";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, Image as ImageIcon, CheckCircle2, Sparkles, Shield } from "lucide-react";
+import {
+  Image as ImageIcon,
+} from "lucide-react";
+import Cform from "../form/CHform";
 
 type ProfileImageProps = {
   onNext: (data: any) => void;
@@ -18,7 +21,11 @@ const imageSchema = z.object({
   avatar_url: z.array(z.any()).min(1, "At least one image is required"),
 });
 
-const ProfileImageUpload = ({ onNext, onPrev, defaultValues }: ProfileImageProps) => {
+const ProfileImageUpload = ({
+  onNext,
+  onPrev,
+  defaultValues,
+}: ProfileImageProps) => {
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Header Section */}
@@ -33,7 +40,7 @@ const ProfileImageUpload = ({ onNext, onPrev, defaultValues }: ProfileImageProps
 
       {/* Form Card */}
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <PHform
+        <Cform
           onSubmit={onNext}
           resolver={zodResolver(imageSchema)}
           defaultValues={defaultValues}
@@ -51,16 +58,15 @@ const ProfileImageUpload = ({ onNext, onPrev, defaultValues }: ProfileImageProps
 
             {/* Image Uploader */}
             <div className="flex justify-center">
-              <ImageUploader 
-                name="avatar_url" 
-                label="Upload Profile Image" 
-                size="medium" 
+              <ImageUploader
+                name="avatar_url"
+                label="Upload Profile Image"
+                size="medium"
               />
             </div>
           </div>
 
-         
-            <div className="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
+          <div className="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
             {onPrev ? (
               <Button
                 type="button"
@@ -107,7 +113,7 @@ const ProfileImageUpload = ({ onNext, onPrev, defaultValues }: ProfileImageProps
               </svg>
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
       <div className="mt-6 flex justify-center gap-2">

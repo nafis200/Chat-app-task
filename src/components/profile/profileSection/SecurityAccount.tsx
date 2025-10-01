@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import PHform from "../form/PHform";
-import { PHinput } from "../form/PHinput";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Shield, Mail, Lock, CheckCircle2 } from "lucide-react";
+import Cform from "../form/CHform";
+import { Cinput } from "../form/Cinput";
 
 type SecurityProps = {
   onNext: (data: any) => void;
@@ -32,7 +32,6 @@ const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
     <div className="w-full max-w-4xl mx-auto">
       {/* Header Section */}
       <div className="mb-8 text-center">
-       
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Security & Access
         </h2>
@@ -43,7 +42,7 @@ const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
 
       {/* Form Card */}
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <PHform
+        <Cform
           onSubmit={(data) => {
             onNext(data);
           }}
@@ -61,7 +60,7 @@ const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
               </h3>
             </div>
 
-            <PHinput
+            <Cinput
               name="email"
               type="email"
               label="Email"
@@ -84,14 +83,14 @@ const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
             </div>
 
             <div className="space-y-6">
-              <PHinput
+              <Cinput
                 name="password"
                 type="password"
                 label="Password"
                 placeholder="Create a strong password"
               />
 
-              <PHinput
+              <Cinput
                 name="confirm_password"
                 type="password"
                 label="Confirm Password"
@@ -169,7 +168,7 @@ const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
               </svg>
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
       <div className="mt-6 flex justify-center gap-2">

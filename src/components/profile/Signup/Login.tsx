@@ -1,20 +1,19 @@
 "use client";
 
-import PHform from "../form/PHform";
+import PHform from "../form/CHform";
 
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PHinput } from "../form/PHinput";
+import { PHinput } from "../form/Cinput";
 import { AiFillApple } from "react-icons/ai";
 
 import ImageUploader from "../form/ImageUploader";
-import { PHtextarea } from "../form/PHtextarea";
-import { PHselect } from "../form/PHselect";
-import { PHcheckbox } from "../form/PHcheckbox";
+import { PHtextarea } from "../form/Ctextarea";
+import { PHselect } from "../form/Cselect";
+import { PHcheckbox } from "../form/Ccheckbox";
 import { PdfUploader } from "../form/PdfUploader";
-import { PHRichTextEditor } from "../form/PHRichTextEditor";
-
+import { PHRichTextEditor } from "../form/CRichTextEditor";
 
 type LoginProps = {
   onNext: (data: any) => void;
@@ -94,8 +93,6 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
     });
   };
 
- 
-
   return (
     <PHform
       onSubmit={loginSubmit}
@@ -134,7 +131,7 @@ const Login = ({ onNext, defaultValues }: LoginProps) => {
       <PHcheckbox name="terms" label="I agree to the terms and conditions" />
       <PdfUploader name="pdf" />
 
-        <PHRichTextEditor name="description" label="Description" />
+      <PHRichTextEditor name="description" label="Description" />
 
       <Button type="submit" className="w-full mt-2">
         next

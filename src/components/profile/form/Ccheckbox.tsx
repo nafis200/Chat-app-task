@@ -4,13 +4,13 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-type PHcheckboxProps = {
+type TcheckboxProps = {
   name: string;
   label: string;
   disabled?: boolean;
 };
 
-export const PHcheckbox = ({ name, label, disabled = false }: PHcheckboxProps) => {
+export const Ccheckbox = ({ name, label, disabled = false }: TcheckboxProps) => {
   const { control } = useFormContext();
 
   return (

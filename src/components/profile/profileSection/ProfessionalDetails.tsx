@@ -1,9 +1,7 @@
 "use client";
 
 import React from "react";
-import PHform from "../form/PHform";
-import { PHinput } from "../form/PHinput";
-import { PHselect } from "../form/PHselect";
+import PHform from "../form/CHform";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +13,9 @@ import {
   Clock,
   Sparkles,
 } from "lucide-react";
+import Cform from "../form/CHform";
+import { Cinput } from "../form/Cinput";
+import { Cselect } from "../form/Cselect";
 
 type ProfessionalProps = {
   onNext: (data: any) => void;
@@ -50,7 +51,7 @@ const ProfessionalDetails = ({
 
       {/* Form Card */}
       <div className="bg-white dark:bg-black rounded-2xl shadow-xl border border-gray-100 p-8 ">
-        <PHform
+        <Cform
           onSubmit={onNext}
           resolver={zodResolver(professionalSchema)}
           defaultValues={defaultValues}
@@ -67,19 +68,19 @@ const ProfessionalDetails = ({
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <PHinput
+              <Cinput
                 name="job_title"
                 label="Job Title"
                 placeholder="e.g. Senior Software Engineer"
               />
-              <PHinput
+              <Cinput
                 name="company"
                 label="Company"
                 placeholder="e.g. Tech Corp Inc."
               />
             </div>
 
-            <PHinput
+            <Cinput
               name="industry"
               label="Industry"
               placeholder="e.g. Information Technology, Finance, Healthcare"
@@ -97,7 +98,7 @@ const ProfessionalDetails = ({
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <PHselect
+              <Cselect
                 name="experience_level"
                 label="Experience Level"
                 placeholder="Select your level"
@@ -110,7 +111,7 @@ const ProfessionalDetails = ({
                   { value: "executive", label: "Executive/C-Level" },
                 ]}
               />
-              <PHinput
+              <Cinput
                 name="years_of_experience"
                 type="number"
                 label="Years of Experience"
@@ -129,7 +130,7 @@ const ProfessionalDetails = ({
               </h3>
             </div>
 
-            <PHinput
+            <Cinput
               name="skills"
               label="Skills"
               placeholder="e.g. JavaScript, React, Node.js, Project Management"
@@ -186,7 +187,7 @@ const ProfessionalDetails = ({
               </svg>
             </Button>
           </div>
-        </PHform>
+        </Cform>
       </div>
 
       <div className="mt-6 flex justify-center gap-2">

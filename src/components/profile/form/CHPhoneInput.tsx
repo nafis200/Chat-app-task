@@ -1,26 +1,27 @@
 "use client";
 
 import { Controller, useFormContext } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { Label } from "@/components/ui/label";
 
-type PHinputProps = {
+type TPhoneInputProps = {
   name: string;
-  type?: string;
-  placeholder?: string;
   label?: string;
-  icon?: any;
+  placeholder?: string;
   disabled?: boolean;
+  icon?: any;
+  defaultCountry?: string;
 };
 
-export const PHinput = ({
-  type = "text",
+export const CPhoneInput = ({
   name,
-  placeholder,
   label,
-  icon: Icon,
+  placeholder,
   disabled = false,
-}: PHinputProps) => {
+  icon: Icon,
+  defaultCountry = "us",
+}: TPhoneInputProps) => {
   const { control } = useFormContext();
 
   return (
@@ -40,23 +41,26 @@ export const PHinput = ({
         control={control}
         render={({ field, fieldState: { error } }) => (
           <>
-            <div className="relative flex items-center w-full">
+            <div className="relative w-full">
               {/* Icon */}
               {Icon && (
-                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Icon className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
               )}
 
-              {/* Input */}
-              <Input
+              {/* Phone Input */}
+              <PhoneInput
                 {...field}
-                id={name}
-                type={type}
-                placeholder={placeholder || label || name}
-                disabled={disabled}
+                country={defaultCountry}
                 value={field.value || ""}
-                className={`w-full h-10 sm:h-12 md:h-12 border-2 border-gray-200 focus:border-blue-500 rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-300
-                  ${Icon ? "pl-10 sm:pl-11" : "px-3 sm:px-4"}
-                `}
+                onChange={(value: any) => field.onChange(value)}
+                disabled={disabled}
+                disableCountryCode={false} 
+                enableAreaCodes={true}
+                inputProps={{
+                  name,
+                  placeholder: placeholder || label || name,
+                  className: `w-full h-12 border-2 border-gray-200 rounded-lg pl-14 ml-2`,
+                }}
               />
             </div>
 
