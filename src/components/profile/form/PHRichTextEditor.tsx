@@ -10,18 +10,20 @@ import { useState } from "react";
 import { EmojiExtension } from "./EmojiExtension";
 import { Button } from "@/components/ui/button";
 import { Bold, Italic, Smile } from "lucide-react";
-
+import clsx from "clsx";
 const Picker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
 type PHRichTextEditorProps = {
   name: string;
   label?: string;
   placeholder?: string;
+  className?:string
 };
 
 export const PHRichTextEditor = ({
   name,
   label,
+  className,
   placeholder = "Type something...",
 }: PHRichTextEditorProps) => {
   const { control } = useFormContext();
@@ -116,12 +118,41 @@ export const PHRichTextEditor = ({
                     className="h-8 sm:h-9 px-2 sm:px-3 transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700"
                     title="Add Image"
                   >
-                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="8.5" cy="8.5" r="1.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <polyline points="21 15 16 10 5 21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <svg
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        ry="2"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <circle
+                        cx="8.5"
+                        cy="8.5"
+                        r="1.5"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <polyline
+                        points="21 15 16 10 5 21"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
-                    <span className="text-xs font-medium hidden sm:inline">Image</span>
+                    <span className="text-xs font-medium hidden sm:inline">
+                      Image
+                    </span>
                   </Button>
 
                   <Button
@@ -152,10 +183,13 @@ export const PHRichTextEditor = ({
               <div className="">
                 <EditorContent
                   editor={editor}
-                   className="min-h-[200px] 
-                   w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[40rem] xl:w-[50rem]  p-3"
+                  className={clsx(
+                    "min-h-[200px] p-3",
+                    className
+                  )}
+                  
                 />
-                
+
                 {/* Bottom gradient fade */}
                 <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-gray-900 to-transparent pointer-events-none" />
               </div>
@@ -164,7 +198,11 @@ export const PHRichTextEditor = ({
             {/* Error Message */}
             {error && (
               <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-medium px-1">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"

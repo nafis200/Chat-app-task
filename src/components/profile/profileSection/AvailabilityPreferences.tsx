@@ -124,6 +124,7 @@ const AvailabilityPreferences = ({ onNext, onPrev, defaultValues }: Availability
             <PHRichTextEditor 
               name="description" 
               label="Description" 
+              className="w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[40rem] xl:w-[50rem]"
             />
             <p className="text-sm text-gray-500 dark:text-gray-400 -mt-4">
               Share your background, expertise, or what you're looking to practice. This helps others understand your experience level and areas of interest.

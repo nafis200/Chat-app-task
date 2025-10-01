@@ -8,12 +8,12 @@ import ProfileImageUpload from "./profileSection/ProfileImageUpload";
 import ResumePortfolio from "./profileSection/ResumePortfolio";
 import AvailabilityPreferences from "./profileSection/AvailabilityPreferences";
 import ReviewSubmit from "./profileSection/ReviewSubmit";
-
+import { useRouter } from "next/navigation";
 const SidebarForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [formData, setFormData] = useState<any>({});
-
+  const router = useRouter();
   const handleNext = (data: any) => {
     setFormData((prev: any) => ({ ...prev, ...data }));
     setCompletedSteps((prev) => [...prev, currentStep]);
@@ -27,9 +27,22 @@ const SidebarForm = () => {
   };
 
   const handleSubmitAll = () => {
-    console.log("All Form Data:", formData);
+
     alert("✅ All data submitted! Check console.");
     setFormData({});
+    const normalized:any = {};
+    for(const key in formData){
+       if(Array.isArray(formData[key])){
+          normalized[key] = formData[key][0]
+       }
+       else{
+         normalized[key] = formData[key]
+       }
+    }
+
+    console.log(normalized)
+    
+    router.push("/")
   };
 
   return (
