@@ -53,7 +53,7 @@ export const PHselect = ({
               defaultValue={field.value}
               disabled={disabled}
             >
-              <SelectTrigger className="w-full h-12 sm:h-14 md:h-12 border-2 border-gray-200 focus:border-blue-500 transition-all duration-300 rounded-xl text-sm sm:text-base">
+              <SelectTrigger className="w-full h-12 p-[22px] sm:h-12 md:h-32 border-2 border-gray-200 focus:border-blue-500 transition-all duration-300 rounded-xl text-sm sm:text-base">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent>

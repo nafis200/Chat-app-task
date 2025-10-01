@@ -153,7 +153,7 @@ export const PHRichTextEditor = ({
                 <EditorContent
                   editor={editor}
                    className="min-h-[200px] 
-                   w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[52rem] xl:w-[62rem]  p-3"
+                   w-[16rem] sm:w-[16rem] md:w-[42rem] lg:w-[40rem] xl:w-[50rem]  p-3"
                 />
                 
                 {/* Bottom gradient fade */}

@@ -86,7 +86,6 @@ const ImageUploader = ({
           <div className={cn("flex flex-col gap-5 w-full", parentClassName)}>
             {label && <Label className="text-lg font-semibold text-gray-900 dark:text-gray-100">{label}</Label>}
 
-            {/* Image Previews */}
             {imagePreviews.length > 0 && (
               <div className="flex flex-wrap gap-4 mt-1 justify-center">
                 {imagePreviews.map((src, index) => (
@@ -116,7 +115,6 @@ const ImageUploader = ({
               </div>
             )}
 
-            {/* Upload Area */}
             <div
               className={cn(
                 "relative border-2 border-dashed rounded-xl transition-all duration-300 w-full sm:max-w-2xl mx-auto backdrop-blur-sm",
