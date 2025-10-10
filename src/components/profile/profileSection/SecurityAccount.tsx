@@ -1,184 +1,135 @@
 "use client";
 
-import React from "react";
-import { Button } from "@/components/ui/button";
+import React, { useEffect } from "react";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Shield, Mail, Lock, CheckCircle2 } from "lucide-react";
-import Cform from "../form/CHform";
+
 import { Cinput } from "../form/Cinput";
+import { Button } from "@/components/ui/button";
+import ImageUploader from "../form/ImageUploader";
 
-type SecurityProps = {
-  onNext: (data: any) => void;
-  onPrev?: () => void;
-  defaultValues?: any;
-};
-
-const securitySchema = z
+const accountSchema = z
   .object({
-    email: z.string().email("Invalid email"),
+    avatar_url: z
+      .any()
+      .refine((file) => file instanceof File || typeof file === "string", {
+        message: "Profile image is required",
+      }),
+    email: z.string().optional(),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    confirm_password: z
-      .string()
-      .min(6, "Confirm Password must be at least 6 characters"),
+    confirm_password: z.string().min(6, "Confirm Password is required"),
   })
   .refine((data) => data.password === data.confirm_password, {
+    message: "Passwords do not match",
     path: ["confirm_password"],
-    message: "Passwords must be match",
   });
 
-const SecurityAccount = ({ onNext, onPrev, defaultValues }: SecurityProps) => {
+type AccountFormValues = z.infer<typeof accountSchema>;
+
+const SecurityAccount = () => {
+  const methods = useForm<AccountFormValues>({
+    resolver: zodResolver(accountSchema),
+    mode: "all",
+    defaultValues: {
+      avatar_url: [],
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
+  });
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    trigger,
+    control,
+  } = methods;
+
+  useEffect(() => {
+    trigger();
+  }, [trigger]);
+
+  const onSubmit: SubmitHandler<AccountFormValues> = (data) => {
+    console.log("Submitted account data:", data);
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Header Section */}
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          Security & Access
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          Create your secure account credentials
-        </p>
-      </div>
+    <div className="w-full mx-auto p-6">
+      <div className="flex flex-col lg:flex-row gap-10">
+        {/* Error Summary */}
 
-      {/* Form Card */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <Cform
-          onSubmit={(data) => {
-            onNext(data);
-          }}
-          resolver={zodResolver(securitySchema)}
-          defaultValues={defaultValues}
-        >
-          {/* Email Section */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center">
-                <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Email Address
-              </h3>
-            </div>
-
-            <Cinput
-              name="email"
-              type="email"
-              label="Email"
-              placeholder="e.g. john.doe@example.com"
-            />
-            <p className="text-sm text-gray-500 dark:text-gray-400 -mt-4">
-              We'll use this email for account verification and communication
-            </p>
-          </div>
-
-          {/* Password Section */}
-          <div className="space-y-6 mt-8">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center">
-                <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Password Protection
-              </h3>
-            </div>
-
-            <div className="space-y-6">
-              <Cinput
-                name="password"
-                type="password"
-                label="Password"
-                placeholder="Create a strong password"
-              />
-
-              <Cinput
-                name="confirm_password"
-                type="password"
-                label="Confirm Password"
-                placeholder="Re-enter your password"
-              />
-            </div>
-
-            {/* Password Requirements */}
-            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password Requirements:
-              </p>
-              <ul className="space-y-1.5">
-                <li className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  At least 6 characters long
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  Mix of letters and numbers recommended
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  Include special characters for extra security
-                </li>
+        <div className="w-full lg:w-1/3">
+          <h2 className="text-2xl font-bold mb-2">Security & Account</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            Update your account credentials and profile picture
+          </p>
+          {Object.keys(errors).length > 0 && (
+            <div className="text-red-500 p-4 rounded-md space-y-1 mb-4">
+              <h3 className="font-semibold">Please fix the following:</h3>
+              <ul className="list-disc list-inside text-sm">
+                {Object.entries(errors).map(([key, value]: any) => (
+                  <li key={key}>{value?.message}</li>
+                ))}
               </ul>
             </div>
-          </div>
+          )}
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
-            {onPrev ? (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onPrev}
-                className="px-6 py-2.5 rounded-lg font-medium transition-all hover:bg-gray-50"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Previous
-              </Button>
-            ) : (
-              <div />
-            )}
+        {/* Form Section */}
+        <div className="w-full lg:w-2/3">
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Profile Picture */}
+              <div>
+                <label className="text-sm font-medium">
+                  Profile Picture (Avatar)*
+                </label>
+                <div className="mt-2 rounded-xl p-6 text-center">
+                  <ImageUploader control={control} name="avatar_url" />
+                </div>
+              </div>
 
-            <Button
-              type="submit"
-              className="px-8 py-2.5 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500 dark:hover:from-blue-600 dark:hover:to-cyan-600 text-white shadow-lg hover:shadow-xl transition-all"
-            >
-              Continue
-              <svg
-                className="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
+              {/* Email */}
+              <div>
+                <Cinput
+                  control={control}
+                  name="email"
+                  type="email"
+                  label="Email*"
+                  placeholder="Enter your email"
+                  value="abc@gmail.com"
+                  readonly={true}
                 />
-              </svg>
-            </Button>
-          </div>
-        </Cform>
-      </div>
+              </div>
 
-      <div className="mt-6 flex justify-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-8 h-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-500 dark:to-rose-500"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+              {/* Password & Confirm Password */}
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                <Cinput
+                  control={control}
+                  name="password"
+                  type="password"
+                  label="Password*"
+                  placeholder="Enter password"
+                />
+                <Cinput
+                  control={control}
+                  name="confirm_password"
+                  type="password"
+                  label="Confirm Password*"
+                  placeholder="Re-enter password"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-center">
+                <Button type="submit" className="px-6">
+                  Save
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
+        </div>
       </div>
     </div>
   );

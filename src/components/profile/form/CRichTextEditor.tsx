@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller} from "react-hook-form";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -18,6 +18,7 @@ type TRichTextEditorProps = {
   label?: string;
   placeholder?: string;
   className?:string
+  control:any
 };
 
 export const CRichTextEditor = ({
@@ -25,8 +26,8 @@ export const CRichTextEditor = ({
   label,
   className,
   placeholder = "Type something...",
+  control
 }: TRichTextEditorProps) => {
-  const { control } = useFormContext();
   const [showPicker, setShowPicker] = useState(false);
 
   return (

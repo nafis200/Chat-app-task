@@ -10,6 +10,7 @@ type textareaProps = {
   label?: string;
   disabled?: boolean;
   rows?: number;
+  control:any
 };
 
 export const Ctextarea = ({
@@ -18,9 +19,9 @@ export const Ctextarea = ({
   label,
   disabled = false,
   rows = 4,
+   control
 }: textareaProps) => {
-  const { control } = useFormContext();
-
+ 
   return (
     <div className="flex flex-col w-full group lg:max-w-screen-lg max-w-sm md:max-w-screen-md"> 
       {/* Label */}

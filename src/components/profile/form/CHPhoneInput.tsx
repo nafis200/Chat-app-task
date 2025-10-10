@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,7 @@ type TPhoneInputProps = {
   disabled?: boolean;
   icon?: any;
   defaultCountry?: string;
+  control:any
 };
 
 export const CPhoneInput = ({
@@ -21,8 +22,9 @@ export const CPhoneInput = ({
   disabled = false,
   icon: Icon,
   defaultCountry = "us",
+  control
 }: TPhoneInputProps) => {
-  const { control } = useFormContext();
+ 
 
   return (
     <div className="flex flex-col w-full group">

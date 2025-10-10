@@ -246,15 +246,6 @@ const ReviewSubmit = ({ formData, onPrev, onSubmitAll }: ReviewSubmitProps) => {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-8 h-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-500 dark:to-rose-500"></div>
-      </div>
     </div>
   );
 };

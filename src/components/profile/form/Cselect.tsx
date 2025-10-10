@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -21,6 +21,7 @@ type selectProps = {
   placeholder?: string;
   options: Option[];
   disabled?: boolean;
+  control:any
 };
 
 export const Cselect = ({
@@ -29,8 +30,9 @@ export const Cselect = ({
   placeholder = "Select an option",
   options,
   disabled = false,
+  control
 }: selectProps) => {
-  const { control } = useFormContext();
+
 
   return (
     <div className="flex flex-col w-full">

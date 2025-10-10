@@ -1,184 +1,275 @@
 "use client";
 
-import React, { useMemo } from "react";
-import PHform from "../form/CHform";
-
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useMemo } from "react";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { allTimezones } from "react-timezone-select";
-import countryList from "react-select-country-list";
-import languageOptions from "./language";
-import { User, Globe, Phone } from "lucide-react";
-import Cform from "../form/CHform";
+
 import { Cinput } from "../form/Cinput";
 import { CPhoneInput } from "../form/CHPhoneInput";
 import { Cselect } from "../form/Cselect";
+import { PdfUploader } from "../form/PdfUploader";
+import { Button } from "@/components/ui/button";
 
-const timezoneOptions = Object.entries(allTimezones).map(([key, label]) => ({
-  value: key,
-  label: label as string,
-}));
-
-type PersonalInfoProps = {
-  onNext: (data: any) => void;
-  onPrev?: () => void;
-  defaultValues?: any;
-};
+import countryList from "react-select-country-list";
+import { allTimezones } from "react-timezone-select";
+import languageOptions from "./language";
+import { CinputSkills } from "../form/CinputSkills";
 
 const personalSchema = z.object({
-  username: z.string().min(3, "Username required"),
-  full_name: z.string().min(3, "Full name required"),
-  location: z.string(),
-  timezone: z.string().optional(),
-  language: z.string(),
+  full_name: z.string().min(1, "Full Name is required"),
+  username: z.string().min(1, "Username is required"),
   phone: z
     .string()
     .min(10, "Phone number is too short")
     .regex(/^\+?[0-9]{10,15}$/, "Invalid phone number"),
+  location: z.string().min(1, "City is required"),
+  country: z.string().min(1, "Country is required"),
+  timezone: z.string().min(1, "Timezone is required"),
+  language: z.string().min(1, "Preferred Language is required"),
+  job_title: z.string().min(1, "Job Title is required"),
+  company: z.string().min(1, "Company is required"),
+  industry: z.string().min(1, "Industry is required"),
+  experience_level: z.string().min(1, "Experience Level is required"),
+  years_of_experience: z.coerce
+    .number()
+    .min(0, "Years of Experience is required"),
+  skills: z
+    .array(z.string().min(1, "Skill cannot be empty"))
+    .min(1, "Skills are required"),
+  resume_url: z.array(z.any()).min(1, "Resume / Portfolio upload is required"),
 });
 
-const PersonalInformation = ({ onNext, defaultValues }: PersonalInfoProps) => {
-  const options = useMemo(() => {
+type PersonalFormValues = z.infer<typeof personalSchema>;
+
+const PersonalInformation = () => {
+  const countryOptions = useMemo(() => {
     return countryList()
       .getData()
-      .map((country: any) => {
+      .map((country) => {
         const flag = country.value
           .toUpperCase()
-          .replace(/./g, (char: any) =>
+          .replace(/./g, (char) =>
             String.fromCodePoint(127397 + char.charCodeAt(0))
           );
-
-        return {
-          value: country.value,
-          label: `${flag} ${country.label}`,
-        };
+        return { value: country.value, label: `${flag} ${country.label}` };
       });
   }, []);
 
+  const timezoneOptions = useMemo(() => {
+    return Object.entries(allTimezones).map(([key, label]) => ({
+      value: key,
+      label: label as string,
+    }));
+  }, []);
+
+  const methods = useForm<any>({
+    resolver: zodResolver(personalSchema),
+    mode: "all",
+    defaultValues: {
+      full_name: "",
+      username: "",
+      phone: "",
+      location: "",
+      country: "",
+      timezone: "",
+      language: "",
+      job_title: "",
+      company: "",
+      industry: "",
+      experience_level: "",
+      years_of_experience: 0,
+      skills: [],
+      resume_url: [],
+    },
+  });
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    trigger,
+    control,
+    setValue,
+    watch,
+  } = methods;
+
+  useEffect(() => {
+    trigger();
+  }, [trigger]);
+
+  const skills = watch("skills");
+
+  const onSubmit: SubmitHandler<PersonalFormValues> = (data) => {
+    console.log("Submitted data", data);
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          Personal Information
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          Let's get to know you better
-        </p>
-      </div>
-
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8">
-        <Cform
-          onSubmit={onNext}
-          resolver={zodResolver(personalSchema)}
-          defaultValues={defaultValues}
-        >
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-black flex items-center justify-center">
-                <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Identity
-              </h3>
+    <div className="w-full mx-auto p-6">
+      <div className="flex flex-col lg:flex-row gap-10">
+        <div className="w-full lg:w-1/3">
+          <h2 className="text-2xl font-bold mb-2">Resume</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            This will be shown to companies to find you opportunities
+          </p>
+          {Object.keys(errors).length > 0 && (
+            <div className="text-red-500 p-4 rounded-md space-y-1 mb-2">
+              <h3 className="font-semibold">Your profile is missing:</h3>
+              <ul className="list-disc list-inside text-sm">
+                {Object.entries(errors).map(([key, value]: any) => (
+                  <li key={key}>{value?.message}</li>
+                ))}
+              </ul>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <Cinput
-                name="username"
-                label="Username"
-                placeholder="e.g. johndoe123"
-              />
-              <Cinput
-                name="full_name"
-                label="Full Name"
-                placeholder="e.g. John Doe"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-6 mt-8">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center dark:bg-black">
-                <Phone className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Contact
-              </h3>
-            </div>
-
-            <CPhoneInput
-              name="phone"
-              label="Phone Number"
-              placeholder="Enter phone number"
-              defaultCountry="us"
-            />
-          </div>
-
-          <div className="space-y-6 mt-8">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center dark:bg-black">
-                <Globe className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Location & Preferences
-              </h3>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <Cselect
-                name="location"
-                label="Location"
-                placeholder="Select your country"
-                options={options}
-              />
-              <Cselect
-                name="timezone"
-                label="Timezone"
-                placeholder="Select your timezone"
-                options={timezoneOptions}
-              />
-            </div>
-
-            <Cselect
-              name="language"
-              label="Preferred Language"
-              placeholder="Select your language"
-              options={languageOptions}
-            />
-          </div>
-          <div className="flex items-center justify-end mt-10 pt-6 border-t border-gray-200 dark:border-gray-800">
-            <Button
-              type="submit"
-              className="px-8 py-2.5 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500 dark:hover:from-blue-600 dark:hover:to-cyan-600 text-white shadow-lg hover:shadow-xl transition-all"
-            >
-              Continue
-              <svg
-                className="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
+          )}
+        </div>
+        <div className="w-full lg:w-2/3">
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Row 1 - Name */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Cinput
+                  control={control}
+                  name="full_name"
+                  label="Full Name*"
+                  placeholder="Enter full name"
                 />
-              </svg>
-            </Button>
-          </div>
-        </Cform>
-      </div>
+                <Cinput
+                  control={control}
+                  name="username"
+                  label="Username*"
+                  placeholder="Enter username"
+                />
+              </div>
 
-      <div className="mt-6 flex justify-center gap-2">
-        <div className="w-8 h-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-500 dark:to-rose-500"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+              {/* Row 2 - Contact */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <CPhoneInput
+                  control={control}
+                  name="phone"
+                  label="Phone Number*"
+                  placeholder="Enter phone number"
+                  defaultCountry="us"
+                />
+                <Cinput
+                  control={control}
+                  name="location"
+                  label="City*"
+                  placeholder="Enter your city"
+                />
+              </div>
+
+              {/* Row 3 - Country, Timezone, Language */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Cselect
+                  control={control}
+                  name="country"
+                  label="Country*"
+                  placeholder="Select your country"
+                  options={countryOptions}
+                />
+                <Cselect
+                  control={control}
+                  name="timezone"
+                  label="Timezone*"
+                  placeholder="Select your timezone"
+                  options={timezoneOptions}
+                />
+              </div>
+
+              <div>
+                <Cselect
+                  control={control}
+                  name="language"
+                  label="Preferred Language*"
+                  placeholder="Select your language"
+                  options={languageOptions}
+                />
+              </div>
+
+              {/* Row 4 - Professional Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Cinput
+                  control={control}
+                  name="job_title"
+                  label="Job Title*"
+                  placeholder="Enter job title"
+                />
+                <Cinput
+                  control={control}
+                  name="company"
+                  label="Company*"
+                  placeholder="Enter company name"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Cinput
+                  control={control}
+                  name="industry"
+                  label="Industry*"
+                  placeholder="Enter industry"
+                />
+                <Cselect
+                  control={control}
+                  name="experience_level"
+                  label="Experience Level"
+                  placeholder="Select your level"
+                  options={[
+                    { value: "entry", label: "Entry Level (0-2 years)" },
+                    { value: "junior", label: "Junior (2-4 years)" },
+                    { value: "mid", label: "Mid-Level (4-7 years)" },
+                    { value: "senior", label: "Senior (7-10 years)" },
+                    { value: "lead", label: "Lead/Principal (10+ years)" },
+                    { value: "executive", label: "Executive/C-Level" },
+                  ]}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Cinput
+                  control={control}
+                  name="years_of_experience"
+                  label="Years of Experience*"
+                  placeholder="Enter years of experience"
+                  type="number"
+                />
+                <Cinput
+                  control={control}
+                  name="skills"
+                  label="Skills*"
+                  placeholder="Enter your skills"
+                />
+              </div>
+
+              {/* Resume Upload */}
+              <div>
+                <label className="text-sm font-medium">
+                  Resume / Portfolio*
+                </label>
+                <div className="mt-2 border-2 border-dashed rounded-xl p-6 text-center">
+                  <PdfUploader control={control} name="resume_url" />
+                </div>
+              </div>
+              <div>
+                <CinputSkills
+                  name="skills"
+                  label="Skills*"
+                  placeholder="Type a skill and press Enter"
+                  control={control} // must pass
+                  value={skills} // current skills array
+                  setValue={setValue} // update skills
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-center">
+                <Button type="submit" className="px-6">
+                  Save
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
+        </div>
       </div>
     </div>
   );

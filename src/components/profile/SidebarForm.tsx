@@ -51,42 +51,22 @@ const SidebarForm = () => {
       <main className="flex-1 flex justify-center items-start p-6">
         <div className="w-full p-6 shadow-lg rounded-md">
           {currentStep === 0 && (
-            <PersonalInformation onNext={handleNext} defaultValues={formData} />
+            <PersonalInformation/>
           )}
           {currentStep === 1 && (
-            <ProfessionalDetails
-              onNext={handleNext}
-              onPrev={handlePrev}
-              defaultValues={formData}
-            />
+            <ProfessionalDetails/>
           )}
           {currentStep === 2 && (
-            <SecurityAccount
-              onNext={handleNext}
-              onPrev={handlePrev}
-              defaultValues={formData}
-            />
+            <SecurityAccount/>
           )}
           {currentStep === 3 && (
-            <ProfileImageUpload
-              onNext={handleNext}
-              onPrev={handlePrev}
-              defaultValues={formData}
-            />
+            <ProfileImageUpload />
           )}
           {currentStep === 4 && (
-            <ResumePortfolio
-              onNext={handleNext}
-              onPrev={handlePrev}
-              defaultValues={formData}
-            />
+            <ResumePortfolio/>
           )}
           {currentStep === 5 && (
-            <AvailabilityPreferences
-              onNext={handleNext}
-              onPrev={handlePrev}
-              defaultValues={formData}
-            />
+            <AvailabilityPreferences/>
           )}
           {currentStep === 6 && (
             <div>
