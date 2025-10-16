@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -59,6 +59,20 @@ const TablePagination = ({
     }
   };
 
+  const handleFirst = () => {
+    if (page !== 1) {
+      setPage(1);
+      updateQueryParams(1, limit);
+    }
+  };
+
+  const handleLast = () => {
+    if (page !== totalPage) {
+      setPage(totalPage);
+      updateQueryParams(totalPage, limit);
+    }
+  };
+
   return (
     <div
       className="
@@ -69,6 +83,18 @@ const TablePagination = ({
     >
       {/* Pagination Buttons */}
       <div className="flex items-center flex-wrap gap-2 order-1 sm:order-1">
+        {/* Jump to First */}
+        <Button
+          onClick={handleFirst}
+          disabled={page === 1}
+          variant="outline"
+          size="lg"
+          className="w-12 h-12 rounded-full flex items-center justify-center"
+        >
+          <ChevronsLeft className="h-6 w-6" />
+        </Button>
+
+        {/* Previous */}
         <Button
           onClick={handlePrev}
           disabled={page === 1}
@@ -79,6 +105,7 @@ const TablePagination = ({
           <ChevronLeft className="h-6 w-6" />
         </Button>
 
+        {/* Page Numbers */}
         <div className="flex items-center gap-2 flex-wrap justify-center">
           {[...Array(totalPage)].map((_, index) => (
             <Button
@@ -96,6 +123,7 @@ const TablePagination = ({
           ))}
         </div>
 
+        {/* Next */}
         <Button
           onClick={handleNext}
           disabled={page === totalPage}
@@ -104,6 +132,17 @@ const TablePagination = ({
           className="w-12 h-12 rounded-full flex items-center justify-center"
         >
           <ChevronRight className="h-6 w-6" />
+        </Button>
+
+        {/* Jump to Last */}
+        <Button
+          onClick={handleLast}
+          disabled={page === totalPage}
+          variant="outline"
+          size="lg"
+          className="w-12 h-12 rounded-full flex items-center justify-center"
+        >
+          <ChevronsRight className="h-6 w-6" />
         </Button>
       </div>
 
