@@ -31,10 +31,36 @@ const TablePagination = ({
   const [limit, setLimit] = useState<number>(
     parseInt(searchParams.get("limit") || "10", 10)
   );
+  const [startPage, setStartPage] = useState<number>(1); 
+
+  const [maxVisible, setMaxVisible] = useState<number>(5); // default
+
+useEffect(() => {
+  const handleResize = () => {
+    const width = window.innerWidth;
+    if (width < 640) {
+      setMaxVisible(3); 
+    } else if (width >= 640 && width < 1024) {
+      setMaxVisible(3); 
+    } else {
+      setMaxVisible(10); 
+    }
+  };
+
+  handleResize(); 
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
 
   useEffect(() => {
     setPage(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    if (page < startPage) setStartPage(page);
+    if (page >= startPage + maxVisible) setStartPage(page - maxVisible + 1);
+  }, [page]);
 
   const updateQueryParams = (newPage: number, newLimit: number) => {
     const params = new URLSearchParams(searchParams);
@@ -60,33 +86,30 @@ const TablePagination = ({
   };
 
   const handleFirst = () => {
-    if (page !== 1) {
-      setPage(1);
-      updateQueryParams(1, limit);
-    }
+    setStartPage(1);
+    setPage(1);
+    updateQueryParams(1, limit);
   };
 
   const handleLast = () => {
-    if (page !== totalPage) {
-      setPage(totalPage);
-      updateQueryParams(totalPage, limit);
-    }
+    const lastStart = Math.max(totalPage - maxVisible + 1, 1);
+    setStartPage(lastStart);
+    setPage(totalPage);
+    updateQueryParams(totalPage, limit);
   };
 
+  const visiblePages = [];
+  for (let i = startPage; i < Math.min(startPage + maxVisible, totalPage + 1); i++) {
+    visiblePages.push(i);
+  }
+
   return (
-    <div
-      className="
-        flex md:justify-end flex-col sm:flex-row 
-        items-center sm:justify-between 
-        w-full mt-6 gap-4 px-4 xl:gap-[2rem]
-      "
-    >
+    <div className="flex md:justify-end flex-col sm:flex-row items-center sm:justify-between w-full mt-6 gap-4 px-4 xl:gap-[5rem]">
       {/* Pagination Buttons */}
-      <div className="flex items-center flex-wrap gap-2 order-1 sm:order-1">
-        {/* Jump to First */}
+      <div className="flex items-center gap-2 flex-wrap order-1 sm:order-1">
+        {/* First Page */}
         <Button
           onClick={handleFirst}
-          disabled={page === 1}
           variant="outline"
           size="lg"
           className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -94,7 +117,7 @@ const TablePagination = ({
           <ChevronsLeft className="h-6 w-6" />
         </Button>
 
-        {/* Previous */}
+        {/* Previous Page */}
         <Button
           onClick={handlePrev}
           disabled={page === 1}
@@ -106,24 +129,22 @@ const TablePagination = ({
         </Button>
 
         {/* Page Numbers */}
-        <div className="flex items-center gap-2 flex-wrap justify-center">
-          {[...Array(totalPage)].map((_, index) => (
-            <Button
-              key={index}
-              onClick={() => {
-                setPage(index + 1);
-                updateQueryParams(index + 1, limit);
-              }}
-              variant={page === index + 1 ? "default" : "outline"}
-              size="lg"
-              className="w-12 h-12 rounded-full flex items-center justify-center"
-            >
-              {index + 1}
-            </Button>
-          ))}
-        </div>
+        {visiblePages.map((num) => (
+          <Button
+            key={num}
+            onClick={() => {
+              setPage(num);
+              updateQueryParams(num, limit);
+            }}
+            variant={num === page ? "default" : "outline"}
+            size="lg"
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+          >
+            {num}
+          </Button>
+        ))}
 
-        {/* Next */}
+        {/* Next Page */}
         <Button
           onClick={handleNext}
           disabled={page === totalPage}
@@ -134,10 +155,9 @@ const TablePagination = ({
           <ChevronRight className="h-6 w-6" />
         </Button>
 
-        {/* Jump to Last */}
+        {/* Last Page */}
         <Button
           onClick={handleLast}
-          disabled={page === totalPage}
           variant="outline"
           size="lg"
           className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -155,12 +175,14 @@ const TablePagination = ({
             const newLimit = parseInt(value, 10);
             setLimit(newLimit);
             updateQueryParams(1, newLimit);
+            setStartPage(1);
+            setPage(1)
+            
           }}
         >
           <SelectTrigger className="w-[130px] border-gray-300 text-sm rounded-xl focus:ring-0 focus:ring-offset-0">
             <SelectValue placeholder="Select limit" />
           </SelectTrigger>
-
           <SelectContent>
             {[5, 10, 20, 30, 50].map((option) => (
               <SelectItem key={option} value={option.toString()}>

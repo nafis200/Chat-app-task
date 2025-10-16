@@ -61,7 +61,7 @@ const Table = ({ payments }: TableProps) => {
   return (
     <div className="mt-5">
       <NMTable data={payments} columns={columns} />
-      <TablePagination totalPage={5} />
+      <TablePagination totalPage={50} />
     </div>
   );
 };
