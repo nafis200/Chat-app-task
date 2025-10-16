@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { NMTable } from "@/components/Data_Table/core/NMTable";
 import TablePagination from "@/components/Data_Table/core/NMTable/TablePagination";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import PaymentModal from "./TableModal"; // import modal
 import { ColumnDef } from "@tanstack/react-table";
 
 type Payment = {
@@ -19,41 +19,39 @@ interface TableProps {
 }
 
 const Table = ({ payments }: TableProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", "1");
-    params.set("limit", "10");
-    router.push(`${pathname}?${params.toString()}`);
-  }, []);
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
   const columns: ColumnDef<Payment>[] = [
-    {
-      accessorKey: "status",
-      header: "Status",
-    },
-    {
-      accessorKey: "name",
-      header: "Name",
-    },
+    { accessorKey: "status", header: "Status" },
+    { accessorKey: "name", header: "Name" },
     {
       accessorKey: "email",
       header: "Email",
+      cell: ({ row }) => {
+        const payment = row.original;
+        return (
+          <button
+            onClick={() => setSelectedPayment(payment)}
+            className="text-blue-600 underline hover:text-blue-800"
+          >
+            {payment.email}
+          </button>
+        );
+      },
     },
     {
       accessorKey: "amount",
       header: "Amount",
       cell: ({ row }) => {
         const amount = parseFloat(row.getValue("amount"));
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount);
-
-        return <div className="font-medium">{formatted}</div>;
+        return (
+          <div className="font-medium">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(amount)}
+          </div>
+        );
       },
     },
   ];
@@ -62,6 +60,12 @@ const Table = ({ payments }: TableProps) => {
     <div className="mt-5">
       <NMTable data={payments} columns={columns} />
       <TablePagination totalPage={50} />
+      {selectedPayment && (
+        <PaymentModal
+          payment={selectedPayment}
+          onClose={() => setSelectedPayment(null)}
+        />
+      )}
     </div>
   );
 };
