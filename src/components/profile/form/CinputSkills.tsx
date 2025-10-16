@@ -4,9 +4,9 @@ import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-type inputProps = {
+type InputProps = {
   name: string;
   label?: string;
   placeholder?: string;
@@ -27,16 +27,17 @@ export const CinputSkills = ({
   readonly = false,
   control,
   value: skills,
-  setValue
-}: inputProps) => {
+  setValue,
+}: InputProps) => {
   const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
-      if (!skills.includes(inputValue.trim())) {
-        setValue(name, [...skills, inputValue.trim()], { shouldValidate: true });
+      const newSkill = inputValue.trim();
+      if (!skills.includes(newSkill)) {
+        setValue(name, [...skills, newSkill], { shouldValidate: true });
       }
       setInputValue("");
     }
@@ -47,6 +48,10 @@ export const CinputSkills = ({
     updatedSkills.splice(index, 1);
     setValue(name, updatedSkills, { shouldValidate: true });
   };
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, [skills]);
 
   return (
     <div className="flex flex-col w-full group">
@@ -59,54 +64,53 @@ export const CinputSkills = ({
         </Label>
       )}
 
-      {/* Skills display */}
-      <div className="flex flex-wrap gap-2 mb-2">
-        {skills.map((skill, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-sm"
-          >
-            {skill}
-            <X
-              onClick={() => removeSkill(index)}
-              className="w-3 h-3 cursor-pointer"
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Input field */}
       <Controller
         name={name}
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <div className="relative flex items-center w-full">
-            {Icon && (
-              <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-            )}
+          <>
+            <div className="relative flex flex-wrap items-center gap-2 border-2 border-gray-200 rounded-lg sm:rounded-xl w-full h-auto min-h-[2rem] p-1 focus-within:border-blue-500 truncate">
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-sm"
+                >
+                  {skill}
+                  <X
+                    onClick={() => removeSkill(index)}
+                    className="w-3 h-3 cursor-pointer"
+                  />
+                </div>
+              ))}
 
-            <Input
-              {...field}
-              id={name}
-              type="text"
-              placeholder={placeholder || "Type a skill and press Enter"}
-              disabled={disabled}
-              readOnly={readonly}
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className={`w-full h-10 sm:h-12 border-2 border-gray-200 focus:border-blue-500 rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-300
-                ${Icon ? "pl-10 sm:pl-11" : "px-3 sm:px-4"}
-              `}
-            />
-
-            {error && (
-              <small className="text-red-500 mt-1 sm:mt-2 ml-1 flex items-center gap-1 animate-in slide-in-from-top-1 text-xs sm:text-sm">
-                <span className="w-1 h-1 rounded-full bg-red-500"></span>
-                {error.message}
-              </small>
-            )}
-          </div>
+              {/* Actual input */}
+              <Input
+                {...field}
+                id={name}
+                type="text"
+                placeholder={
+                  skills.length === 0
+                    ? placeholder || "Type a skill and press Enter"
+                    : ""
+                }
+                disabled={disabled}
+                readOnly={readonly}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                ref={inputRef}
+                className="flex-1 w-full border-none shadow-none focus:ring-0 h-8 sm:h-10 text-sm sm:text-base px-1 py-1"
+              />
+            </div>
+            <div>
+              {error && (
+                <small className="w-full text-red-500 mt-1 sm:mt-2 flex items-center gap-1 text-xs sm:text-sm">
+                  <span className="w-1 h-1 rounded-full bg-red-500"></span>
+                  {error.message}
+                </small>
+              )}
+            </div>
+          </>
         )}
       />
     </div>

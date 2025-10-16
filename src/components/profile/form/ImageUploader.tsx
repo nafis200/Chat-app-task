@@ -41,11 +41,11 @@ const ImageUploader = ({
         };
 
         return (
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
             {/* Avatar Circle */}
             <div
               className={cn(
-                "w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-start justify-start text-white text-2xl font-bold bg-teal-800 overflow-hidden"
+                "w-16 h-16 sm:w-20 sm:h-20 flex items-start justify-start text-white text-2xl font-bol overflow-hidden"
               )}
             >
               {preview ? (
@@ -58,7 +58,7 @@ const ImageUploader = ({
             </div>
 
             <div>
-              <div className="relative">
+              <span className="relative top-1">
                 <input
                   type="file"
                   accept="image/png, image/jpeg, image/gif"
@@ -75,7 +75,7 @@ const ImageUploader = ({
                 <p className="text-xs text-gray-500 mt-1 text-center">
                 JPG, PNG, or GIF. Max 2 MB. Files over 150KB will be compressed.
               </p>
-              </div>
+              </span>
               
             </div>
           </div>

@@ -226,18 +226,13 @@ const PersonalInformation = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Cinput
-                  control={control}
-                  name="years_of_experience"
-                  label="Years of Experience*"
-                  placeholder="Enter years of experience"
-                  type="number"
-                />
-                <Cinput
-                  control={control}
+                  <CinputSkills
                   name="skills"
                   label="Skills*"
-                  placeholder="Enter your skills"
+                  placeholder="Type a skill and press Enter"
+                  control={control} 
+                  value={skills} 
+                  setValue={setValue} 
                 />
               </div>
 
@@ -250,16 +245,7 @@ const PersonalInformation = () => {
                   <PdfUploader control={control} name="resume_url" />
                 </div>
               </div>
-              <div>
-                <CinputSkills
-                  name="skills"
-                  label="Skills*"
-                  placeholder="Type a skill and press Enter"
-                  control={control} // must pass
-                  value={skills} // current skills array
-                  setValue={setValue} // update skills
-                />
-              </div>
+             
 
               {/* Submit Button */}
               <div className="flex justify-center">
