@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -67,19 +67,19 @@ const TablePagination = ({
         w-full mt-6 gap-4 px-4 xl:gap-[2rem]
       "
     >
-      {/* Pagination Center (Top in mobile, Left in large) */}
+      {/* Pagination Buttons */}
       <div className="flex items-center flex-wrap gap-2 order-1 sm:order-1">
         <Button
           onClick={handlePrev}
           disabled={page === 1}
           variant="outline"
-          size="sm"
-          className="w-8 h-8 rounded-full flex items-center justify-center"
+          size="lg"
+          className="w-12 h-12 rounded-full flex items-center justify-center"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ChevronLeft className="h-6 w-6" />
         </Button>
 
-        <div className="flex items-center gap-1 flex-wrap justify-center">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
           {[...Array(totalPage)].map((_, index) => (
             <Button
               key={index}
@@ -88,8 +88,8 @@ const TablePagination = ({
                 updateQueryParams(index + 1, limit);
               }}
               variant={page === index + 1 ? "default" : "outline"}
-              size="sm"
-              className="w-8 h-8 rounded-full flex items-center justify-center"
+              size="lg"
+              className="w-12 h-12 rounded-full flex items-center justify-center"
             >
               {index + 1}
             </Button>
@@ -100,14 +100,15 @@ const TablePagination = ({
           onClick={handleNext}
           disabled={page === totalPage}
           variant="outline"
-          size="sm"
-          className="w-8 h-8 rounded-full flex items-center justify-center"
+          size="lg"
+          className="w-12 h-12 rounded-full flex items-center justify-center"
         >
-          <ArrowRight className="h-4 w-4" />
+          <ChevronRight className="h-6 w-6" />
         </Button>
       </div>
 
-      <span className="flex items-center gap-2 text-sm order-2 sm:order-">
+      {/* Limit Selector */}
+      <span className="flex items-center gap-2 text-sm order-2 sm:order-2">
         <span className="text-gray-600">Show:</span>
         <Select
           value={limit?.toString() || "10"}
