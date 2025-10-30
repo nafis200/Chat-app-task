@@ -17,67 +17,98 @@ export default function SummarySection() {
   const { summary } = data;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
-      <Card className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-medium">Total Time Spent</CardTitle>
-          <Clock className="h-5 w-5 opacity-80" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{summary.total_time_spent_hours}h</div>
-          <p className="text-sm opacity-80 mt-1">Hours invested in interviews</p>
-        </CardContent>
-      </Card>
+    <section className="p-8 bg-white dark:bg-black transition-colors duration-500">
+      <div className="max-w-6xl mx-auto space-y-10">
+        {/* Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Cards */}
+          {[
+            {
+              title: "Total Time Spent",
+              value: `${summary.total_time_spent_hours}h`,
+              subtitle: "Hours invested in interviews",
+              icon: <Clock className="h-5 w-5" />,
+            },
+            {
+              title: "Total Interviews",
+              value: summary.total_interviews,
+              subtitle: "Interviews completed",
+              icon: <BarChart3 className="h-5 w-5" />,
+            },
+            {
+              title: "Best Score",
+              value: summary.best_score,
+              subtitle: "Highest performance",
+              icon: <Award className="h-5 w-5" />,
+            },
+            {
+              title: "Average Score",
+              value: summary.average_score,
+              subtitle: "Across all interviews",
+              icon: <Gauge className="h-5 w-5" />,
+            },
+          ].map((item, i) => (
+            <Card
+              key={i}
+              className="border border-neutral-200 dark:border-neutral-800 bg-transparent 
+                         backdrop-blur-sm 
+                         transition-transform duration-300 ease-in-out 
+                         hover:scale-105 hover:shadow-lg hover:bg-neutral-50/30 dark:hover:bg-neutral-900/50"
+            >
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <CardTitle className="text-sm font-medium text-neutral-600 dark:text-white tracking-wide">
+                  {item.title}
+                </CardTitle>
+                <div className="text-neutral-800 dark:text-neutral-200">{item.icon}</div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-semibold text-black dark:text-white">
+                  {item.value}
+                </div>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+                  {item.subtitle}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
 
-      {/* 📊 Total Interviews */}
-      <Card className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-medium">Total Interviews</CardTitle>
-          <BarChart3 className="h-5 w-5 opacity-80" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{summary.total_interviews}</div>
-          <p className="text-sm opacity-80 mt-1">Interviews completed</p>
-        </CardContent>
-      </Card>
-
-      {/* 🏆 Best Score */}
-      <Card className="bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-medium">Best Score</CardTitle>
-          <Award className="h-5 w-5 opacity-80" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{summary.best_score}</div>
-          <p className="text-sm opacity-80 mt-1">Highest performance</p>
-        </CardContent>
-      </Card>
-
-      {/* ⚙️ Average Score */}
-      <Card className="bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-medium">Average Score</CardTitle>
-          <Gauge className="h-5 w-5 opacity-80" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{summary.average_score}</div>
-          <p className="text-sm opacity-80 mt-1">Across all interviews</p>
-        </CardContent>
-      </Card>
-
-      {/* 🚀 Improvement */}
-      <Card className="bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-medium">Improvement</CardTitle>
-          <TrendingUp className="h-5 w-5 opacity-80" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{summary.improvement}</div>
-          <p className="text-sm opacity-80 mt-1">
-            From first score ({summary.first_score}) → latest ({summary.latest_score})
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+          {/* Improvement Card */}
+          <Card
+            className="col-span-2 lg:col-span-2 border border-neutral-200 dark:border-neutral-800 
+                       bg-neutral-100/30 dark:bg-neutral-900/70 backdrop-blur-md 
+                       transition-transform duration-300 ease-in-out 
+                       hover:scale-105 hover:shadow-lg"
+          >
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <CardTitle className="text-sm font-medium uppercase tracking-wide text-neutral-700 dark:text-white">
+                Overall Improvement
+              </CardTitle>
+              <div className="text-neutral-700 dark:text-neutral-300">
+                <TrendingUp className="h-5 w-5" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-baseline gap-3 mb-3">
+                <div className="text-5xl font-bold text-black dark:text-white">
+                  {summary.improvement}
+                </div>
+                <div className="text-base font-medium text-neutral-500 dark:text-neutral-400">
+                  points
+                </div>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                <span>
+                  First <span className="font-semibold text-black dark:text-white">{summary.first_score}</span>
+                </span>
+                <span>→</span>
+                <span>
+                  Latest <span className="font-semibold text-black dark:text-white">{summary.latest_score}</span>
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
   );
 }
