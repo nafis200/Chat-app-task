@@ -14,6 +14,14 @@ const data = {
     best_score: 92,
     first_score: 50,
   },
+  interviews: [
+    { session_id: "uuid-2023-1", date: "2023-01-10T10:00:00Z", interview_type: "behavioral", score: 60 },
+    { session_id: "uuid-2023-2", date: "2023-04-15T12:00:00Z", interview_type: "technical", score: 65 },
+    { session_id: "uuid-2023-3", date: "2023-09-20T14:00:00Z", interview_type: "system-design", score: 70 },
+    { session_id: "uuid-2024-1", date: "2024-02-05T10:00:00Z", interview_type: "behavioral", score: 68 },
+    { session_id: "uuid-2024-2", date: "2024-06-18T11:00:00Z", interview_type: "AI", score: 72 },
+    { session_id: "uuid-2024-3", date: "2024-10-12T12:00:00Z", interview_type: "system-design", score: 75 },
+  ],
 };
 
 type Stat = {
@@ -25,6 +33,7 @@ type Stat = {
   tinyChart?: boolean;
   badge?: string;
   badgeColor?: string;
+  recentInterviews?: { session_id: string; interview_type: string; score: number }[];
 };
 
 function ChangePill({ value, up }: { value: number; up?: boolean }) {
@@ -42,9 +51,10 @@ function ChangePill({ value, up }: { value: number; up?: boolean }) {
   );
 }
 
+// TinyCircular chart for improvement
 function TinySpark({ percent }: { percent: number }) {
   return (
-    <div className="w-16 h-16 md:ml-5">
+    <div className="w-20 h-20 md:ml-5">
       <CircularProgressbar
         value={percent}
         text={`${percent.toFixed(0)}%`}
@@ -59,26 +69,29 @@ function TinySpark({ percent }: { percent: number }) {
   );
 }
 
-// Determine badge for Best Score
-function getScoreBadge(score: number) {
-  if (score <= 40) return { badge: "Poor", color: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400" };
-  if (score <= 50) return { badge: "Improve", color: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400" };
-  if (score <= 60) return { badge: "Average", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400" };
-  if (score <= 79) return { badge: "Good", color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400" };
-  if (score <= 89) return { badge: "Excellent", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400" };
-  return { badge: "Top Rated", color: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400" };
+// Colored badge for interview type
+function TypeBadge({ type }: { type: string }) {
+  const colors: Record<string, string> = {
+    behavioral: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400",
+    technical: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
+    "system-design": "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400",
+    AI: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400",
+    default: "bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-400",
+  };
+  return <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${colors[type] || colors.default}`}>{type}</span>;
 }
 
 export default function StatsCard() {
-  const { summary } = data;
+  const { summary, interviews } = data;
 
   const improvementValue = summary.latest_score - summary.first_score;
-  const improvementPercent: number = parseFloat(
-    ((improvementValue / summary.first_score) * 100).toFixed(1)
-  );
+  const improvementPercent = parseFloat(((improvementValue / summary.first_score) * 100).toFixed(1));
   const isImproved = improvementPercent >= 0;
 
-  const bestScoreBadge = getScoreBadge(summary.best_score);
+  // Get last 3 interviews
+  const lastInterviews = [...interviews]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
 
   const stats: Stat[] = [
     {
@@ -94,13 +107,14 @@ export default function StatsCard() {
       label: "Number of Interviews Taken",
       badge: "Active",
       badgeColor: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
+      recentInterviews: lastInterviews,
     },
     {
       title: "Best Score",
       value: `${summary.best_score} / 100`,
       label: "Highest Score Achieved",
-      badge: bestScoreBadge.badge,
-      badgeColor: bestScoreBadge.color,
+      badge: "Top Score",
+      badgeColor: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400",
     },
     {
       title: "Improvement",
@@ -126,7 +140,7 @@ export default function StatsCard() {
               className="flex flex-col justify-between border border-slate-100 dark:border-neutral-800 rounded-xl p-4 hover:shadow-md dark:hover:shadow-lg transition"
             >
               <div className="flex items-start justify-between">
-                <div>
+                <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <div className="text-sm text-slate-500 dark:text-slate-300 font-medium">{s.title}</div>
                     {s.badge && (
@@ -136,8 +150,20 @@ export default function StatsCard() {
                     )}
                   </div>
 
-                  <div className="mt-2 flex items-center gap-3">
+                  <div className="mt-2 flex flex-col gap-2">
                     <div className="text-2xl font-semibold text-slate-900 dark:text-white">{s.value}</div>
+
+                    {s.recentInterviews && (
+                      <div className="flex flex-col gap-1">
+                        {s.recentInterviews.map((i) => (
+                          <div key={i.session_id} className="flex items-center gap-2">
+                            <TypeBadge type={i.interview_type} />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{i.score}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
                     {s.change && <ChangePill value={s.change} up={s.changeUp} />}
                   </div>
                 </div>

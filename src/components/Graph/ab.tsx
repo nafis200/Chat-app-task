@@ -36,7 +36,11 @@ function ChangePill({ value, up }: { value: number; up?: boolean }) {
           : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400"
       }`}
     >
-      {up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+      {up ? (
+        <ArrowUpRight className="w-3 h-3" />
+      ) : (
+        <ArrowDownRight className="w-3 h-3" />
+      )}
       {value}%
     </span>
   );
@@ -59,48 +63,45 @@ function TinySpark({ percent }: { percent: number }) {
   );
 }
 
-// Determine badge for Best Score
-function getScoreBadge(score: number) {
-  if (score <= 40) return { badge: "Poor", color: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400" };
-  if (score <= 50) return { badge: "Improve", color: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400" };
-  if (score <= 60) return { badge: "Average", color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400" };
-  if (score <= 79) return { badge: "Good", color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400" };
-  if (score <= 89) return { badge: "Excellent", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400" };
-  return { badge: "Top Rated", color: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400" };
-}
-
 export default function StatsCard() {
   const { summary } = data;
 
   const improvementValue = summary.latest_score - summary.first_score;
+  const isImproved = improvementValue >= 0;
   const improvementPercent: number = parseFloat(
     ((improvementValue / summary.first_score) * 100).toFixed(1)
   );
-  const isImproved = improvementPercent >= 0;
-
-  const bestScoreBadge = getScoreBadge(summary.best_score);
 
   const stats: Stat[] = [
     {
       title: "Total Time Spent",
       value: `${summary.total_time_spent_hours} hrs`,
       label: "Hours Spent on Interviews",
+      change: 23,
+      changeUp: true,
       badge: "Info",
-      badgeColor: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-400",
+      badgeColor:
+        "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-400",
     },
     {
       title: "Total Interviews",
       value: summary.total_interviews,
       label: "Number of Interviews Taken",
+      change: 23,
+      changeUp: true,
       badge: "Active",
-      badgeColor: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
+      badgeColor:
+        "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
     },
     {
       title: "Best Score",
-      value: `${summary.best_score} / 100`,
+      value: summary.best_score,
       label: "Highest Score Achieved",
-      badge: bestScoreBadge.badge,
-      badgeColor: bestScoreBadge.color,
+      change: 23,
+      changeUp: true,
+      badge: "Top Score",
+      badgeColor:
+        "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400",
     },
     {
       title: "Improvement",
@@ -109,10 +110,9 @@ export default function StatsCard() {
       change: improvementPercent,
       changeUp: isImproved,
       tinyChart: true,
-      badge: isImproved ? "Improved" : "Declined",
-      badgeColor: isImproved
-        ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400"
-        : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
+      badge: "Improved",
+      badgeColor:
+        "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400",
     },
   ];
 
@@ -128,24 +128,33 @@ export default function StatsCard() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <div className="text-sm text-slate-500 dark:text-slate-300 font-medium">{s.title}</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-300 font-medium">
+                      {s.title}
+                    </div>
                     {s.badge && (
-                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${s.badgeColor}`}>
+                      <span
+                        className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${s.badgeColor}`}
+                      >
                         {s.badge}
                       </span>
                     )}
                   </div>
 
                   <div className="mt-2 flex items-center gap-3">
-                    <div className="text-2xl font-semibold text-slate-900 dark:text-white">{s.value}</div>
-                    {s.change && <ChangePill value={s.change} up={s.changeUp} />}
+                    <div className="text-2xl font-semibold text-slate-900 dark:text-white">
+                      {s.value}
+                    </div>
+                    {s.change && (
+                      <ChangePill value={s.change} up={s.changeUp} />
+                    )}
                   </div>
                 </div>
-
                 {s.tinyChart && <TinySpark percent={improvementPercent} />}
               </div>
 
-              <div className="mt-3 text-xs text-slate-400 dark:text-slate-500">{s.label}</div>
+              <div className="mt-3 text-xs text-slate-400 dark:text-slate-500">
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
