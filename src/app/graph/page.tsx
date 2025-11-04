@@ -1,3 +1,4 @@
+import AIMLCard from "@/components/Graph/AIMLCard";
 import { ChartAreaAxes } from "@/components/Graph/AreaChart";
 import { InterviewChart } from "@/components/Graph/Graph";
 import PerformanceChart from "@/components/Graph/PerformanceChart";
@@ -21,6 +22,9 @@ const page = () => {
       </div>
       <div>
         <ChartAreaAxes />
+      </div>
+      <div>
+        <AIMLCard/>
       </div>
     </div>
   );
